@@ -88,8 +88,8 @@ export const Reports = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
-          <p className="text-gray-600 mt-1">Attendance analytics and reports</p>
+          <h1 className="text-3xl white font-bold  font-tech">Reports</h1>
+          <p className="text-purple-400 mt-1">Attendance analytics and reports</p>
         </div>
         <Button
           variant="primary"
@@ -101,63 +101,114 @@ export const Reports = () => {
         </Button>
       </div>
 
-      <Card>
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Start Date
-            </label>
-            <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-              />
-            </div>
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              End Date
-            </label>
-            <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-              />
-            </div>
-          </div>
-        </div>
-      </Card>
+     <Card className="card-ui">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    {/* Start Date */}
+    <div>
+      <label className="block text-sm text-gray-400 mb-2">
+        Start Date
+      </label>
+
+      <div className="relative">
+        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          className="
+            w-full pl-10 pr-4 py-3
+            bg-[#0B1220]
+            border border-white/10
+            rounded-lg
+            text-white
+            focus:border-purple-500
+            focus:ring-1 focus:ring-purple-500
+            outline-none
+          "
+        />
+      </div>
+    </div>
+
+    {/* End Date */}
+    <div>
+      <label className="block text-sm text-gray-400 mb-2">
+        End Date
+      </label>
+
+      <div className="relative">
+        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          className="
+            w-full pl-10 pr-4 py-3
+            bg-[#0B1220]
+            border border-white/10
+            rounded-lg
+            text-white
+            focus:border-purple-500
+            focus:ring-1 focus:ring-purple-500
+            outline-none
+          "
+        />
+      </div>
+    </div>
+
+  </div>
+</Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Records</p>
-              <p className="text-3xl font-bold text-gray-900 mt-2">{totalRecords}</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <FileText className="w-6 h-6 text-blue-600" />
-            </div>
-          </div>
-        </Card>
+        <Card className="card-ui">
+  <div className="flex items-center justify-between">
 
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Present Count</p>
-              <p className="text-3xl font-bold text-green-600 mt-2">{presentCount}</p>
-            </div>
-            <div className="p-4 bg-green-50 rounded-lg">
-              <TrendingUp className="w-6 h-6 text-green-600" />
-            </div>
-          </div>
-        </Card>
+    <div>
+      <p className="text-sm text-gray-400">
+        Total Records
+      </p>
+
+      <p className="text-3xl font-bold text-white mt-2 stat-number">
+        {totalRecords}
+      </p>
+    </div>
+
+    <div className="
+      p-3 rounded-xl
+      bg-purple-500/10
+      border border-purple-500/20
+    ">
+      <FileText className="w-6 h-6 text-purple-400" />
+    </div>
+
+  </div>
+</Card>
+
+        <Card className="card-ui">
+  <div className="flex items-center justify-between">
+
+    <div>
+      <p className="text-sm text-gray-400">
+        Present Count
+      </p>
+
+      <p className="text-3xl font-bold text-green-400 mt-2 stat-number">
+        {presentCount}
+      </p>
+    </div>
+
+    <div className="
+      p-3 rounded-xl
+      bg-green-500/10
+      border border-green-500/20
+    ">
+      <TrendingUp className="w-6 h-6 text-green-400" />
+    </div>
+
+  </div>
+</Card>
 
         <Card>
           <div className="flex items-center justify-between">
@@ -172,26 +223,44 @@ export const Reports = () => {
         </Card>
       </div>
 
-      <Card title="Attendance Trend">
-        <AttendanceChart data={chartData} type="bar" />
-      </Card>
+      <Card className="card-ui">
 
-      <Card title="Detailed Records">
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-700"></div>
-          </div>
-        ) : (
-          <>
-            <div className="mb-4">
-              <p className="text-sm text-gray-600">
-                Showing {records.length} records from {formatDate(startDate)} to {formatDate(endDate)}
-              </p>
-            </div>
-            <Table columns={columns} data={records} />
-          </>
-        )}
-      </Card>
+  <h3 className="text-lg font-semibold text-purple-400 mb-6">
+    Attendance Trend
+  </h3>
+
+  <div className="panel-card">
+    <AttendanceChart data={chartData} type="bar" />
+  </div>
+
+</Card>
+
+      <Card className="card-ui">
+
+  <h3 className="text-lg font-semibold text-purple-400 mb-6">
+    Detailed Records
+  </h3>
+
+  {loading ? (
+    <div className="flex justify-center py-12">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-400"></div>
+    </div>
+  ) : (
+    <>
+      <p className="text-gray-400 text-sm mb-4">
+        Showing {records.length} records from {formatDate(startDate)} to {formatDate(endDate)}
+      </p>
+
+      <div className="panel-card p-2">
+        <div className="card-ui p-4 rounded-xl">
+             <Table columns={columns} data={records} />
+             </div>
+       
+      </div>
+    </>
+  )}
+
+</Card>
     </div>
   );
 };

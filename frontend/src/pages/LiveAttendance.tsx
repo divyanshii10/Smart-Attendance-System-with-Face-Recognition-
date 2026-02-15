@@ -93,8 +93,8 @@ export const LiveAttendance = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-3xl font-bold gradient-text font-tech">Live Attendance</h1>
-        <p className="text-cyan-300/70 mt-1">Real-time biometric face recognition system</p>
+        <h1 className="text-3xl white font-bold  font-tech">Live Attendance</h1>
+        <p className="text-purple-400 mt-1">Real-time biometric face recognition system</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -108,8 +108,8 @@ export const LiveAttendance = () => {
             >
               {!isActive && (
                 <div className="text-center">
-                  <Camera className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-                  <p className="text-cyan-300">Scanner Inactive</p>
+                  <Camera className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-300">Scanner Inactive</p>
                 </div>
               )}
             </ScanFrame>
@@ -144,76 +144,160 @@ export const LiveAttendance = () => {
         <div className="space-y-6">
           {/* System Status */}
           <Card title="System Status">
-            <div className="space-y-4">
-              <StatusIndicator
-                status={isActive ? 'active' : 'inactive'}
-                label="Scanner"
-                description={isActive ? 'Capturing biometric data' : 'Ready to start'}
-              />
+  <div className="space-y-3">
 
-              <StatusIndicator
-                status={faceDetected ? 'active' : 'inactive'}
-                label="Face Detection"
-                description={faceDetected ? 'Face in frame' : 'Waiting for face'}
-              />
+    {/* Scanner */}
+    <div className="
+      flex items-center justify-between
+      p-4
+      bg-[#0B1220]
+      border border-white/10
+      rounded-xl
+      hover:border-purple-500/40
+      hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+      transition-all
+    ">
+      <div>
+        <p className="text-sm text-white font-medium">
+          Scanner
+        </p>
+        <p className="text-xs text-gray-400">
+          {isActive ? 'Capturing biometric data' : 'Ready to start'}
+        </p>
+      </div>
 
-              <StatusIndicator
-                status={idScanned ? 'active' : 'inactive'}
-                label="ID Verification"
-                description={idScanned ? 'Identity confirmed' : 'Pending verification'}
-              />
+      <div className={`
+        w-3 h-3 rounded-full
+        ${isActive ? 'bg-purple-500' : 'bg-gray-500'}
+      `}/>
+    </div>
 
-              <div className="p-4 glass rounded-lg border border-cyan-400/20 mt-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Clock className="w-4 h-4 text-cyan-400" />
-                  <span className="text-sm font-medium text-cyan-300">Today's Stats</span>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-cyan-300/70">Verified</span>
-                    <span className="font-semibold text-white">132</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-cyan-300/70">Failed</span>
-                    <span className="font-semibold text-white">3</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
+    {/* Face Detection */}
+    <div className="
+      flex items-center justify-between
+      p-4
+      bg-[#0B1220]
+      border border-white/10
+      rounded-xl
+      hover:border-purple-500/40
+      hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+      transition-all
+    ">
+      <div>
+        <p className="text-sm text-white font-medium">
+          Face Detection
+        </p>
+        <p className="text-xs text-gray-400">
+          {faceDetected ? 'Face in frame' : 'Waiting for face'}
+        </p>
+      </div>
+
+      <div className={`
+        w-3 h-3 rounded-full
+        ${faceDetected ? 'bg-purple-500' : 'bg-gray-500'}
+      `}/>
+    </div>
+
+    {/* ID Verification */}
+    <div className="
+      flex items-center justify-between
+      p-4
+      bg-[#0B1220]
+      border border-white/10
+      rounded-xl
+      hover:border-purple-500/40
+      hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+      transition-all
+    ">
+      <div>
+        <p className="text-sm text-white font-medium">
+          ID Verification
+        </p>
+        <p className="text-xs text-gray-400">
+          {idScanned ? 'Identity confirmed' : 'Pending verification'}
+        </p>
+      </div>
+
+      <div className={`
+        w-3 h-3 rounded-full
+        ${idScanned ? 'bg-purple-500' : 'bg-gray-500'}
+      `}/>
+    </div>
+
+    {/* Today's Stats */}
+    <div className="
+      p-4
+      bg-[#0B1220]
+      border border-white/10
+      rounded-xl
+      mt-2
+    ">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm text-gray-300">
+          Today's Stats
+        </span>
+      </div>
+
+      <div className="flex justify-between text-sm">
+        <span className="text-gray-400">Verified</span>
+        <span className="text-white font-semibold">132</span>
+      </div>
+
+      <div className="flex justify-between text-sm mt-1">
+        <span className="text-gray-400">Failed</span>
+        <span className="text-white font-semibold">3</span>
+      </div>
+    </div>
+
+  </div>
+</Card>
 
           {/* Activity Log */}
           <Card title="Activity Log">
-            <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
-              {logs.length === 0 ? (
-                <p className="text-sm text-gray-400 text-center py-8">No activity yet</p>
-              ) : (
-                logs.map((log, index) => (
-                  <motion.div
-                    key={log.id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className={`p-3 rounded-lg border backdrop-blur-sm ${log.status === 'success'
-                      ? 'bg-green-500/10 border-green-500/30'
-                      : 'bg-red-500/10 border-red-500/30'
-                      }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <p className={`text-xs font-medium flex-1 ${log.status === 'success' ? 'text-green-300' : 'text-red-300'
-                        }`}>
-                        {log.message}
-                      </p>
-                      <span className={`text-xs ml-2 ${log.status === 'success' ? 'text-green-400/70' : 'text-red-400/70'
-                        }`}>
-                        {log.timestamp}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))
-              )}
-            </div>
-          </Card>
+  <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
+
+    {logs.length === 0 ? (
+      <p className="text-sm text-gray-400 text-center py-8">
+        No activity yet
+      </p>
+    ) : (
+      logs.map((log, index) => (
+        <motion.div
+          key={log.id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className="
+            flex items-center justify-between
+            p-4
+            bg-[#0B1220]
+            border border-white/10
+            rounded-xl
+            hover:border-purple-500/40
+            hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+            transition-all
+          "
+        >
+          {/* Left */}
+          <div className="flex flex-col">
+            <p className="text-sm text-white font-medium">
+              {log.message}
+            </p>
+            <p className="text-xs text-gray-400">
+              System Event
+            </p>
+          </div>
+
+          {/* Right */}
+          <span className="text-xs text-gray-500">
+            {log.timestamp}
+          </span>
+        </motion.div>
+      ))
+    )}
+
+  </div>
+</Card>
         </div>
       </div>
     </div>

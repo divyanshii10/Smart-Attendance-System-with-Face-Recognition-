@@ -48,8 +48,12 @@ export const Dashboard = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-3xl font-bold gradient-text font-tech">Dashboard</h1>
-          <p className="text-cyan-300/70 mt-1">Real-time attendance monitoring system</p>
+          <h1 className="text-3xl white font-bold">
+            Dashboard
+          </h1>
+          <p className="text-purple-400 mt-1">
+          Real-time attendance monitoring system
+        </p>
         </div>
         <StatusIndicator
           status="active"
@@ -93,84 +97,150 @@ export const Dashboard = () => {
         </Card>
 
         <Card title="Quick Stats">
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-blue-900">Average Attendance</span>
-                <span className="text-2xl font-bold text-blue-600">87%</span>
-              </div>
-              <p className="text-xs text-blue-700 mt-2">Last 7 days</p>
-            </div>
+  <div className="space-y-4">
 
-            <div className="p-4 bg-green-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-green-900">Perfect Attendance</span>
-                <span className="text-2xl font-bold text-green-600">45</span>
-              </div>
-              <p className="text-xs text-green-700 mt-2">Students this month</p>
-            </div>
-
-            <div className="p-4 bg-yellow-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-yellow-900">Below 75%</span>
-                <span className="text-2xl font-bold text-yellow-600">12</span>
-              </div>
-              <p className="text-xs text-yellow-700 mt-2">Need attention</p>
-            </div>
-          </div>
-        </Card>
+    <div className="p-4 card-ui">
+      <div className="flex justify-between">
+        <span className="text-sm text-gray-400">
+          Average Attendance
+        </span>
+        <span className="text-xl font-bold text-white">
+          87%
+        </span>
       </div>
+    </div>
+
+    <div className="p-4 card-ui">
+      <div className="flex justify-between">
+        <span className="text-sm text-gray-400">
+          Perfect Attendance
+        </span>
+        <span className="text-xl font-bold text-white">
+          45
+        </span>
+      </div>
+    </div>
+
+  </div>
+</Card>
+</div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Recent Activity">
-          <div className="space-y-3">
-            {[
-              { name: 'Rahul Sharma', action: 'marked present', time: '2 mins ago', status: 'success' },
-              { name: 'Priya Patel', action: 'marked present', time: '5 mins ago', status: 'success' },
-              { name: 'Amit Kumar', action: 'marked present', time: '8 mins ago', status: 'success' },
-              { name: 'Sneha Reddy', action: 'marked present', time: '12 mins ago', status: 'success' },
-            ].map((activity, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm font-medium">
-                      {activity.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{activity.name}</p>
-                    <p className="text-xs text-gray-500">{activity.action}</p>
-                  </div>
-                </div>
-                <span className="text-xs text-gray-500">{activity.time}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
+       <Card title="Recent Activity">
+  <div className="space-y-4">
 
-        <Card title="Department Attendance">
-          <div className="space-y-4">
-            {[
-              { name: 'Computer Science', percentage: 92, color: 'bg-blue-500' },
-              { name: 'Electronics', percentage: 88, color: 'bg-green-500' },
-              { name: 'Mechanical', percentage: 85, color: 'bg-yellow-500' },
-              { name: 'Civil', percentage: 79, color: 'bg-red-500' },
-            ].map((dept, index) => (
-              <div key={index}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">{dept.name}</span>
-                  <span className="text-sm font-semibold text-gray-900">{dept.percentage}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className={`${dept.color} h-2 rounded-full transition-all duration-300`}
-                    style={{ width: `${dept.percentage}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+    {[
+      { name: 'Rahul Sharma', action: 'marked present', time: '2 mins ago' },
+      { name: 'Priya Patel', action: 'marked present', time: '5 mins ago' },
+      { name: 'Amit Kumar', action: 'marked present', time: '8 mins ago' },
+      { name: 'Sneha Reddy', action: 'marked present', time: '12 mins ago' },
+    ].map((activity, index) => (
+
+      <div
+        key={index}
+        className="
+          flex items-center justify-between
+          p-4
+          card-ui
+        "
+      >
+
+        {/* Left Side */}
+        <div className="flex items-center space-x-3">
+
+          {/* Avatar */}
+          <div className="
+            w-10 h-10
+            bg-purple-500/20
+            text-purple-400
+            rounded-full
+            flex items-center justify-center
+            font-semibold
+            text-sm
+          ">
+            {activity.name.split(' ').map(n => n[0]).join('')}
           </div>
-        </Card>
+
+          {/* Text */}
+          <div>
+            <p className="text-sm font-medium text-white">
+              {activity.name}
+            </p>
+
+            <p className="text-xs text-gray-400">
+              {activity.action}
+            </p>
+          </div>
+
+        </div>
+
+        {/* Time */}
+        <span className="text-xs text-gray-500">
+          {activity.time}
+        </span>
+
+      </div>
+
+    ))}
+
+  </div>
+</Card>
+
+               <Card title="Department Attendance">
+
+  <div className="space-y-6">
+
+    {[
+      { name: 'Computer Science', percentage: 92, color: 'bg-gray-600' },
+      { name: 'Electronics', percentage: 88, color: 'bg-gray-600' },
+      { name: 'Mechanical', percentage: 85, color: 'bg-gray-600' },
+      { name: 'Civil', percentage: 79, color: 'bg-gray-600' },
+    ].map((dept, index) => (
+
+      <div key={index}>
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-2">
+
+          <span className="text-sm font-medium text-white">
+            {dept.name}
+          </span>
+
+          <span className="text-sm font-semibold text-gray-300">
+            {dept.percentage}%
+          </span>
+
+        </div>
+
+        {/* Track */}
+        <div className="
+          w-full
+          h-2
+          rounded-full
+          bg-white/10
+          overflow-hidden
+        ">
+
+          {/* Fill */}
+          <div
+            className={`
+              h-2
+              rounded-full
+              ${dept.color}
+              transition-all duration-500
+            `}
+            style={{ width: `${dept.percentage}%` }}
+          />
+
+        </div>
+
+      </div>
+
+    ))}
+
+  </div>
+
+</Card>
       </div>
     </div>
   );

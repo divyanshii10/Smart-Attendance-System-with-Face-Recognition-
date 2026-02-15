@@ -41,7 +41,7 @@ export const ScanFrame = ({
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-40"
                     style={{
-                        backgroundImage: 'url(/assets/face-scan-bg.jpg.jpeg)',
+                        backgroundImage: 'url(/assets/face-scan-bg.jpeg)',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                     }}

@@ -1,25 +1,36 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './hooks/useAuth';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { Layout } from './components/layout/Layout';
-import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
-import { LiveAttendance } from './pages/LiveAttendance';
-import { Students } from './pages/Students';
-import { Reports } from './pages/Reports';
-import { Settings } from './pages/Settings';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./hooks/useAuth";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Layout } from "./components/layout/Layout";
+
+import Landing from "./pages/Landing";
+import { Login } from "./pages/Login";
+import { Dashboard } from "./pages/Dashboard";
+import { LiveAttendance } from "./pages/LiveAttendance";
+import { Students } from "./pages/Students";
+import { Reports } from "./pages/Reports";
+import { Settings } from "./pages/Settings";
 
 function AppRoutes() {
   const { isAuthenticated } = useAuth();
 
   return (
     <Routes>
+
+      {/* 🟢 LANDING PAGE (Public) */}
+      <Route path="/" element={<Landing />} />
+
+      {/* 🟢 LOGIN (Public) */}
       <Route
         path="/login"
-        element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
+        element={
+          isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
+        }
       />
+
+      {/* 🔒 DASHBOARD */}
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <Layout>
@@ -28,6 +39,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 🔒 LIVE ATTENDANCE */}
       <Route
         path="/live-attendance"
         element={
@@ -38,6 +51,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 🔒 STUDENTS */}
       <Route
         path="/students"
         element={
@@ -48,6 +63,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 🔒 REPORTS */}
       <Route
         path="/reports"
         element={
@@ -58,6 +75,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 🔒 SETTINGS */}
       <Route
         path="/settings"
         element={
@@ -68,6 +87,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* ❌ FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

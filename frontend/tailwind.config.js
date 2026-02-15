@@ -4,20 +4,17 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      colors: {
-        // Futuristic AI Theme Colors
-        neon: {
-          cyan: '#00FFFF',
-          blue: '#0080FF',
-          purple: '#A020F0',
-          pink: '#FF00FF',
-        },
-        cyber: {
-          dark: '#030712',
-          darker: '#000000',
-          blue: '#0A1929',
-          gray: '#1A1A2E',
-        }
+          colors: {
+
+        primary: "#7C3AED",
+        secondary: "#9333EA",
+
+        appBg: "#020617",
+        sectionBg: "#030A1A",
+        cardBg: "#0B1220",
+
+        textPrimary: "#FFFFFF",
+        textSecondary: "#9CA3AF",
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -104,13 +101,9 @@ export default {
         xs: '2px',
       },
       boxShadow: {
-        'glow-cyan': '0 0 20px rgba(0, 255, 255, 0.5)',
-        'glow-cyan-lg': '0 0 40px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.3)',
-        'glow-blue': '0 0 20px rgba(0, 128, 255, 0.5)',
-        'glow-purple': '0 0 20px rgba(160, 32, 240, 0.5)',
-        'glow-green': '0 0 20px rgba(0, 255, 0, 0.5)',
-        'glow-red': '0 0 20px rgba(255, 0, 0, 0.5)',
-      },
+    'card-glow':
+      '0 0 30px rgba(124,58,237,0.15)',
+      }
     },
   },
   plugins: [],

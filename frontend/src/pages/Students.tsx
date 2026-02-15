@@ -110,8 +110,8 @@ export const Students = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Students</h1>
-          <p className="text-gray-600 mt-1">Manage student records</p>
+          <h1 className="text-3xl white font-bold  font-tech">Students</h1>
+          <p className="text-purple-400 mt-1">Manage student records</p>
         </div>
         <Button
           variant="primary"
@@ -130,17 +130,35 @@ export const Students = () => {
               placeholder="Search by name, roll number, or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
+              className="
+                w-full pl-10 pr-4 py-2
+                bg-[#0B1220]
+                border border-white/10
+                rounded-lg
+                text-white
+                placeholder-gray-400
+                focus:ring-2 focus:ring-purple-500
+                outline-none
+              "
             />
           </div>
           <div className="flex gap-2">
             <div className="relative">
               <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <select
-                value={selectedDept}
-                onChange={(e) => setSelectedDept(e.target.value)}
-                className="pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none appearance-none bg-white"
-              >
+                  value={selectedDept}
+                  onChange={(e) => setSelectedDept(e.target.value)}
+                  className="
+                    pl-10 pr-8 py-2
+                    bg-[#0B1220]
+                    border border-white/10
+                    rounded-lg
+                    text-white
+                    focus:ring-2 focus:ring-purple-500
+                    outline-none
+                    appearance-none
+                  "
+                >
                 <option value="">All Departments</option>
                 {departments.map((dept) => (
                   <option key={dept.id} value={dept.name}>
@@ -158,8 +176,12 @@ export const Students = () => {
           </p>
         </div>
 
-        <Table columns={columns} data={paginatedStudents} />
-
+            {/* <Card> */}
+              <div className="card-ui p-4 rounded-xl">
+            <Table columns={columns} data={paginatedStudents} />
+             </div>
+           {/* </Card> */}
+           
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
