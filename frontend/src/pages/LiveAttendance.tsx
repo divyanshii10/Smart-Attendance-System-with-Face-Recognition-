@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Camera, Play, Square, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Camera, Play, Square, Clock } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { ScanFrame } from '../components/ui/ScanFrame';
+import { StatusIndicator } from '../components/ui/StatusIndicator';
 import { attendanceAPI } from '../services/api';
 import type { AttendanceLog } from '../types';
 
@@ -76,164 +79,137 @@ export const LiveAttendance = () => {
     setLogs(prev => [newLog, ...prev].slice(0, 20));
   };
 
+  const getScannerStatus = () => {
+    if (!isActive) return 'idle';
+    if (idScanned) return 'recognized';
+    if (faceDetected) return 'scanning';
+    return 'scanning';
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Live Attendance</h1>
-        <p className="text-gray-600 mt-1">Real-time face recognition and ID verification</p>
-      </div>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h1 className="text-3xl font-bold gradient-text font-tech">Live Attendance</h1>
+        <p className="text-cyan-300/70 mt-1">Real-time biometric face recognition system</p>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-                <Card title="Live Face Scanner">
+          <Card>
+            {/* Scanner Frame */}
+            <ScanFrame
+              isActive={isActive}
+              faceDetected={faceDetected}
+              status={getScannerStatus()}
+            >
+              {!isActive && (
+                <div className="text-center">
+                  <Camera className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
+                  <p className="text-cyan-300">Scanner Inactive</p>
+                </div>
+              )}
+            </ScanFrame>
 
-        <div className="relative rounded-xl overflow-hidden border border-cyan-400/30">
-
-          {/* 🔵 Background Scan Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-60"
-            style={{
-              backgroundImage: "url('/assets/face-scan-bg.jpg')"
-            }}
-          />
-
-          {/* 🔵 Dark Overlay */}
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-
-          {/* 🔵 Scanner Frame */}
-          <div className="relative h-[450px] flex items-center justify-center">
-
-            {isActive ? (
-              <div className="relative">
-
-                {/* Face Box */}
-                <div className="w-64 h-64 border-2 border-cyan-400 animate-pulse rounded-xl" />
-
-                {/* Scanning Line */}
-                <div className="absolute left-0 w-full h-1 bg-cyan-400 animate-[scan_2s_linear_infinite]" />
-
-                <p className="text-center text-cyan-300 mt-6 text-sm">
-                  Scanning face biometrics...
-                </p>
-              </div>
-            ) : (
-              <div className="text-center">
-                <Camera className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-                <p className="text-cyan-300">Scanner Inactive</p>
-              </div>
-            )}
-          </div>
-
-          {/* LIVE Badge */}
-          {isActive && (
-            <div className="absolute top-4 left-4 bg-red-500 px-3 py-1 rounded-lg text-sm font-semibold animate-pulse">
-              LIVE
+            {/* Control Buttons */}
+            <div className="mt-6 flex justify-center gap-4">
+              {!isActive ? (
+                <Button
+                  onClick={handleStartSession}
+                  isLoading={isLoading}
+                  variant="primary"
+                  size="lg"
+                  leftIcon={<Play className="w-5 h-5" />}
+                >
+                  Start Scanning
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleStopSession}
+                  isLoading={isLoading}
+                  variant="danger"
+                  size="lg"
+                  leftIcon={<Square className="w-5 h-5" />}
+                >
+                  Stop Scanning
+                </Button>
+              )}
             </div>
-          )}
-        </div>
-
-        {/* Buttons */}
-        <div className="mt-6 flex justify-center">
-          {!isActive ? (
-            <Button
-              onClick={handleStartSession}
-              isLoading={isLoading}
-              className="bg-cyan-500 hover:bg-cyan-600 text-black font-semibold"
-              leftIcon={<Play className="w-5 h-5" />}
-            >
-              Start Scan
-            </Button>
-          ) : (
-            <Button
-              onClick={handleStopSession}
-              isLoading={isLoading}
-              className="bg-red-500 hover:bg-red-600"
-              leftIcon={<Square className="w-5 h-5" />}
-            >
-              Stop Scan
-            </Button>
-          )}
-        </div>
-
-      </Card>
+          </Card>
         </div>
 
         <div className="space-y-6">
-          <Card title="Status">
+          {/* System Status */}
+          <Card title="System Status">
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">Session Status</span>
-                <span className={`px-2 py-1 rounded text-xs font-medium ${
-                  isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                }`}>
-                  {isActive ? 'Active' : 'Inactive'}
-                </span>
-              </div>
+              <StatusIndicator
+                status={isActive ? 'active' : 'inactive'}
+                label="Scanner"
+                description={isActive ? 'Capturing biometric data' : 'Ready to start'}
+              />
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">Face Detection</span>
-                {faceDetected ? (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-gray-400" />
-                )}
-              </div>
+              <StatusIndicator
+                status={faceDetected ? 'active' : 'inactive'}
+                label="Face Detection"
+                description={faceDetected ? 'Face in frame' : 'Waiting for face'}
+              />
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">ID Verification</span>
-                {idScanned ? (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-gray-400" />
-                )}
-              </div>
+              <StatusIndicator
+                status={idScanned ? 'active' : 'inactive'}
+                label="ID Verification"
+                description={idScanned ? 'Identity confirmed' : 'Pending verification'}
+              />
 
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="p-4 glass rounded-lg border border-cyan-400/20 mt-4">
                 <div className="flex items-center space-x-2 mb-2">
-                  <Clock className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-900">Today's Stats</span>
+                  <Clock className="w-4 h-4 text-cyan-400" />
+                  <span className="text-sm font-medium text-cyan-300">Today's Stats</span>
                 </div>
                 <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-xs text-blue-700">Verified</span>
-                    <span className="text-xs font-semibold text-blue-900">132</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-cyan-300/70">Verified</span>
+                    <span className="font-semibold text-white">132</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-xs text-blue-700">Failed</span>
-                    <span className="text-xs font-semibold text-blue-900">3</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-cyan-300/70">Failed</span>
+                    <span className="font-semibold text-white">3</span>
                   </div>
                 </div>
               </div>
             </div>
           </Card>
 
+          {/* Activity Log */}
           <Card title="Activity Log">
-            <div className="space-y-2 max-h-64 overflow-y-auto">
+            <div className="space-y-2 max-h-64 overflow-y-auto scrollbar-thin">
               {logs.length === 0 ? (
-                <p className="text-sm text-gray-500 text-center py-8">No activity yet</p>
+                <p className="text-sm text-gray-400 text-center py-8">No activity yet</p>
               ) : (
-                logs.map((log) => (
-                  <div
+                logs.map((log, index) => (
+                  <motion.div
                     key={log.id}
-                    className={`p-3 rounded-lg border ${
-                      log.status === 'success'
-                        ? 'bg-green-50 border-green-200'
-                        : 'bg-red-50 border-red-200'
-                    }`}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`p-3 rounded-lg border backdrop-blur-sm ${log.status === 'success'
+                      ? 'bg-green-500/10 border-green-500/30'
+                      : 'bg-red-500/10 border-red-500/30'
+                      }`}
                   >
                     <div className="flex items-start justify-between">
-                      <p className={`text-xs font-medium ${
-                        log.status === 'success' ? 'text-green-900' : 'text-red-900'
-                      }`}>
+                      <p className={`text-xs font-medium flex-1 ${log.status === 'success' ? 'text-green-300' : 'text-red-300'
+                        }`}>
                         {log.message}
                       </p>
-                      <span className={`text-xs ${
-                        log.status === 'success' ? 'text-green-600' : 'text-red-600'
-                      }`}>
+                      <span className={`text-xs ml-2 ${log.status === 'success' ? 'text-green-400/70' : 'text-red-400/70'
+                        }`}>
                         {log.timestamp}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>

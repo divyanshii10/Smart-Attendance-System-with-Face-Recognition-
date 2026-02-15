@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Users, UserCheck, UserX, TrendingUp } from 'lucide-react';
+import { Users, UserCheck, UserX, TrendingUp, Activity } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { StatCard, Card } from '../components/ui/Card';
 import { AttendanceChart } from '../components/charts/AttendanceChart';
+import { StatusIndicator } from '../components/ui/StatusIndicator';
 import { dashboardAPI } from '../services/api';
 import type { DashboardStats, AttendanceData } from '../types';
 
@@ -39,10 +41,22 @@ export const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Overview of attendance statistics</p>
-      </div>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between"
+      >
+        <div>
+          <h1 className="text-3xl font-bold gradient-text font-tech">Dashboard</h1>
+          <p className="text-cyan-300/70 mt-1">Real-time attendance monitoring system</p>
+        </div>
+        <StatusIndicator
+          status="active"
+          label="System Online"
+          icon={<Activity className="w-4 h-4" />}
+        />
+      </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard

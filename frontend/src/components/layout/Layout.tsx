@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import { AnimatedBackground } from '../ui/AnimatedBackground';
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,27 +9,13 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#030712]">
+    <div className="relative min-h-screen overflow-hidden">
 
-      {/* 🔵 Animated Scan Grid Background */}
-      <div
-        className="fixed inset-0 z-0 opacity-40"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 20%, rgba(0,255,255,0.15), transparent 40%),
-            radial-gradient(circle at 80% 70%, rgba(0,120,255,0.15), transparent 40%),
-            url('/assets/face-scan-bg.jpg')
-          `,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+      {/* Animated Background */}
+      <AnimatedBackground />
 
-      {/* 🔵 Cyber Gradient Overlay */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-black/80 via-blue-900/40 to-black/90 backdrop-blur-sm" />
-
-      {/* 🔵 Foreground UI */}
-      <div className="relative z-10 min-h-screen text-white">
+      {/* Main Content */}
+      <div className="relative z-10 min-h-screen">
         <Sidebar />
         <Header />
 

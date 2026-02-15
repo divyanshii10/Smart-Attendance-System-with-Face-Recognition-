@@ -32,16 +32,16 @@ export const Login = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
 
-      {/* 🔵 Face Wireframe Background */}
+      {/* 🔵 AI Circuit Brain Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-40"
+        className="absolute inset-0 bg-cover bg-center opacity-30"
         style={{
-          backgroundImage: "url('/assets/face-wireframe.jpg')"
+          backgroundImage: "url('/assets/attendance-bg.png')"
         }}
       />
 
       {/* 🔵 Dark Overlay */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-cyber-blue/30 to-black/90 backdrop-blur-sm" />
 
       {/* 🔵 Login Container */}
       <div className="relative z-10 max-w-md w-full px-6">
