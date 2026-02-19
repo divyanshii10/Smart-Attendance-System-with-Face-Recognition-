@@ -34,7 +34,7 @@ export const Login = () => {
 
       {/* 🔵 AI Circuit Brain Background */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-30"
+        className="absolute inset-0 bg-cover bg-center opacity-70"
         style={{
           backgroundImage: "url('/assets/attendance-bg.png')"
         }}

@@ -67,8 +67,8 @@ export const Settings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-1">Configure system preferences</p>
+        <h1 className="text-3xl white font-bold  font-tech">Settings</h1>
+        <p className="text-purple-400 mt-1">Configure system preferences</p>
       </div>
 
       {successMessage && (
@@ -77,111 +77,129 @@ export const Settings = () => {
         </div>
       )}
 
-      <Card title="Camera Settings" action={<Camera className="w-5 h-5 text-gray-400" />}>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Camera Device
-            </label>
-            <select
-              value={settings.cameraId}
-              onChange={(e) => setSettings({ ...settings, cameraId: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent outline-none"
-            >
-              <option value="default">Default Camera</option>
-              <option value="camera1">Front Camera</option>
-              <option value="camera2">Back Camera</option>
-              <option value="camera3">External Camera</option>
-            </select>
-            <p className="text-xs text-gray-500 mt-1">
-              Select the camera device for face recognition
-            </p>
-          </div>
+      <Card title="Camera Settings">
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Confidence Threshold: {settings.confidenceThreshold}%
-            </label>
-            <input
-              type="range"
-              min="50"
-              max="100"
-              value={settings.confidenceThreshold}
-              onChange={(e) =>
-                setSettings({ ...settings, confidenceThreshold: parseInt(e.target.value) })
-              }
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-slate-700"
-            />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>Less Strict (50%)</span>
-              <span>More Strict (100%)</span>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Minimum confidence level required for successful face recognition
-            </p>
-          </div>
-        </div>
-      </Card>
+  <div className="space-y-4">
 
-      <Card title="Notification Settings" action={<Bell className="w-5 h-5 text-gray-400" />}>
-        <div className="space-y-4">
-          <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-            <div>
-              <p className="font-medium text-gray-900">Enable Notifications</p>
-              <p className="text-sm text-gray-500">Receive alerts for attendance events</p>
-            </div>
-            <input
-              type="checkbox"
-              checked={settings.notificationsEnabled}
-              onChange={(e) =>
-                setSettings({ ...settings, notificationsEnabled: e.target.checked })
-              }
-              className="w-5 h-5 text-slate-700 border-gray-300 rounded focus:ring-slate-500"
-            />
-          </label>
+    {/* Camera Device */}
+    <div className="panel-card">
+      <label className="text-sm text-gray-400 block mb-2">
+        Camera Device
+      </label>
 
-          <label className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-            <div>
-              <p className="font-medium text-gray-900">Auto Export Reports</p>
-              <p className="text-sm text-gray-500">Automatically export daily reports</p>
-            </div>
-            <input
-              type="checkbox"
-              checked={settings.autoExport}
-              onChange={(e) => setSettings({ ...settings, autoExport: e.target.checked })}
-              className="w-5 h-5 text-slate-700 border-gray-300 rounded focus:ring-slate-500"
-            />
-          </label>
-        </div>
-      </Card>
+      <select
+        value={settings.cameraId}
+        onChange={(e) =>
+          setSettings({ ...settings, cameraId: e.target.value })
+        }
+        className="
+          w-full bg-transparent
+          border border-white/10
+          text-white
+          px-3 py-2 rounded-lg
+          focus:outline-none focus:border-purple-400
+        "
+      >
+        <option className="bg-black">Default Camera</option>
+        <option className="bg-black">Front Camera</option>
+        <option className="bg-black">Back Camera</option>
+        <option className="bg-black">External Camera</option>
+      </select>
 
-      <Card title="System Settings" action={<Database className="w-5 h-5 text-gray-400" />}>
-        <div className="space-y-4">
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-yellow-900">Database Operations</p>
-                <p className="text-xs text-yellow-700 mt-1">
-                  These operations will affect your system data. Use with caution.
-                </p>
-              </div>
-            </div>
-          </div>
+      <p className="text-xs text-gray-500 mt-2">
+        Select the camera device for face recognition
+      </p>
+    </div>
 
-          <div className="flex gap-3">
-            <Button variant="outline" size="md">
-              Backup Database
-            </Button>
-            <Button variant="outline" size="md">
-              Export All Data
-            </Button>
-            <Button variant="danger" size="md" onClick={handleReset}>
-              Reset Settings
-            </Button>
-          </div>
-        </div>
-      </Card>
+    {/* Confidence Slider */}
+    <div className="panel-card">
+      <label className="text-sm text-gray-400 block mb-3">
+        Confidence Threshold: {settings.confidenceThreshold}%
+      </label>
+
+      <input
+        type="range"
+        min="50"
+        max="100"
+        value={settings.confidenceThreshold}
+        onChange={(e) =>
+          setSettings({
+            ...settings,
+            confidenceThreshold: parseInt(e.target.value)
+          })
+        }
+        className="w-full accent-purple-500"
+      />
+
+      <div className="flex justify-between text-xs text-gray-500 mt-2">
+        <span>Less Strict</span>
+        <span>More Strict</span>
+      </div>
+    </div>
+
+  </div>
+
+</Card>
+
+      <Card title="Notification Settings">
+
+  <div className="space-y-4">
+
+    {/* Enable Notifications */}
+    <label className="panel-card flex justify-between items-center cursor-pointer">
+
+      <div>
+        <p className="text-white font-medium">
+          Enable Notifications
+        </p>
+        <p className="text-gray-400 text-sm">
+          Receive alerts for attendance events
+        </p>
+      </div>
+
+      <input
+        type="checkbox"
+        checked={settings.notificationsEnabled}
+        onChange={(e) =>
+          setSettings({
+            ...settings,
+            notificationsEnabled: e.target.checked
+          })
+        }
+        className="accent-purple-500 w-5 h-5"
+      />
+
+    </label>
+
+    {/* Auto Export */}
+    <label className="panel-card flex justify-between items-center cursor-pointer">
+
+      <div>
+        <p className="text-white font-medium">
+          Auto Export Reports
+        </p>
+        <p className="text-gray-400 text-sm">
+          Automatically export daily reports
+        </p>
+      </div>
+
+      <input
+        type="checkbox"
+        checked={settings.autoExport}
+        onChange={(e) =>
+          setSettings({
+            ...settings,
+            autoExport: e.target.checked
+          })
+        }
+        className="accent-purple-500 w-5 h-5"
+      />
+
+    </label>
+
+  </div>
+
+</Card>
 
       <div className="flex justify-end gap-3">
         <Button variant="outline" onClick={() => window.location.reload()}>
@@ -197,26 +215,43 @@ export const Settings = () => {
         </Button>
       </div>
 
-      <Card title="System Information">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Version</p>
-            <p className="text-lg font-semibold text-gray-900 mt-1">1.0.0</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Backend Status</p>
-            <p className="text-lg font-semibold text-green-600 mt-1">Connected</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Last Backup</p>
-            <p className="text-lg font-semibold text-gray-900 mt-1">2 hours ago</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">Total Students</p>
-            <p className="text-lg font-semibold text-gray-900 mt-1">150</p>
-          </div>
-        </div>
-      </Card>
+      <Card title="System Settings">
+
+  <div className="space-y-4">
+
+    {/* Warning Panel */}
+    <div className="panel-card border-yellow-500/30 bg-yellow-500/5">
+
+      <p className="text-yellow-400 font-medium text-sm">
+        Database Operations
+      </p>
+
+      <p className="text-yellow-300/70 text-xs mt-1">
+        These operations will affect your system data. Use with caution.
+      </p>
+
+    </div>
+
+    {/* Buttons */}
+    <div className="flex flex-wrap gap-3">
+
+      <Button variant="outline">
+        Backup Database
+      </Button>
+
+      <Button variant="outline">
+        Export All Data
+      </Button>
+
+      <Button variant="danger" onClick={handleReset}>
+        Reset Settings
+      </Button>
+
+    </div>
+
+  </div>
+
+</Card>
     </div>
   );
 };

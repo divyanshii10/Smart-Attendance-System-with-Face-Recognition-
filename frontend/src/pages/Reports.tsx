@@ -213,11 +213,13 @@ export const Reports = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Attendance Rate</p>
-              <p className="text-3xl font-bold text-slate-700 mt-2">{attendanceRate}%</p>
+              <p className="text-sm text-gray-400">Attendance Rate</p>
+              <p className="text-3xl font-bold text-white mt-2 stat-number">{attendanceRate}%</p>
             </div>
-            <div className="p-4 bg-slate-50 rounded-lg">
-              <TrendingUp className="w-6 h-6 text-slate-700" />
+            <div className="p-3 rounded-xl
+      bg-purple-500/10
+      border border-purple-500/20">
+              <TrendingUp className="w-6 h-6 text-purple-400" />
             </div>
           </div>
         </Card>
