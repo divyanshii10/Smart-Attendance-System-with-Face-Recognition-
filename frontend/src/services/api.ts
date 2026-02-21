@@ -114,13 +114,18 @@ export const studentsAPI = {
 
 export const attendanceAPI = {
   startSession: async (): Promise<{ success: boolean; sessionId: string }> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return { success: true, sessionId: Math.random().toString() };
+    const response = await api.post('/attendance/start');
+    return response.data;
   },
 
   stopSession: async (sessionId: string): Promise<{ success: boolean }> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return { success: true };
+    const response = await api.post('/attendance/stop', { sessionId });
+    return response.data;
+  },
+
+  verifyAttendance: async (image_base64: string): Promise<{ success: boolean; student?: string; message?: string }> => {
+    const response = await api.post('/attendance/verify', { image: image_base64 });
+    return response.data;
   },
 
   markAttendance: async (studentId: string, method: 'face' | 'id_card'): Promise<AttendanceRecord> => {

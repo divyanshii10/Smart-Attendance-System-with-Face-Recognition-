@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Camera, Play, Square, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ScanFrame } from '../components/ui/ScanFrame';
 import { StatusIndicator } from '../components/ui/StatusIndicator';
-import { attendanceAPI } from '../services/api';
 import type { AttendanceLog } from '../types';
+import Webcam from 'react-webcam';
 
 export const LiveAttendance = () => {
+  const webcamRef = useRef<Webcam>(null);
   const [isActive, setIsActive] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [faceDetected, setFaceDetected] = useState(false);
@@ -19,7 +20,8 @@ export const LiveAttendance = () => {
   const handleStartSession = async () => {
     setIsLoading(true);
     try {
-      const result = await attendanceAPI.startSession();
+      const res = await fetch("http://127.0.0.1:8000/attendance/start", { method: "POST" });
+      const result = await res.json();
       setSessionId(result.sessionId);
       setIsActive(true);
       addLog('Session started successfully', 'success');
@@ -35,7 +37,11 @@ export const LiveAttendance = () => {
     if (sessionId) {
       setIsLoading(true);
       try {
-        await attendanceAPI.stopSession(sessionId);
+        await fetch("http://127.0.0.1:8000/attendance/stop", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId })
+        });
         setIsActive(false);
         setSessionId(null);
         setFaceDetected(false);
@@ -49,23 +55,50 @@ export const LiveAttendance = () => {
     }
   };
 
-  const simulateLiveDetection = () => {
-    setTimeout(() => {
-      setFaceDetected(true);
-      addLog('Face detected in frame', 'success');
+  // Set up an interval to grab a frame from webcam and verify it in the backend
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
 
-      setTimeout(() => {
-        setIdScanned(true);
-        addLog('ID card scanned successfully', 'success');
+    if (isActive) {
+      intervalId = setInterval(async () => {
+        if (!webcamRef.current) return;
+        const imageSrc = webcamRef.current.getScreenshot();
+        if (imageSrc) {
+          try {
+            setFaceDetected(true);
+            const res = await fetch("http://127.0.0.1:8000/attendance/verify", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                image: imageSrc,
+              }),
+            });
+            const response = await res.json();
 
-        setTimeout(() => {
-          addLog('Student verified: Rahul Sharma (CS2021001)', 'success');
-          setFaceDetected(false);
-          setIdScanned(false);
-        }, 2000);
-      }, 2000);
-    }, 3000);
-  };
+            if (response.success && response.student) {
+              if (response.message === "Already marked") {
+                addLog(`${response.student} already marked today`, 'success');
+              } else {
+                addLog(`Student verified: ${response.student}`, 'success');
+              }
+              setIdScanned(true);
+            } else {
+              setIdScanned(false);
+            }
+          } catch (error) {
+            console.error("Verification failed", error);
+            setIdScanned(false);
+          }
+        }
+      }, 3000); // Verify every 3 seconds while active
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isActive]);
 
   const addLog = (message: string, status: 'success' | 'failed') => {
     const newLog: AttendanceLog = {
@@ -106,11 +139,23 @@ export const LiveAttendance = () => {
               faceDetected={faceDetected}
               status={getScannerStatus()}
             >
-              {!isActive && (
+              {!isActive ? (
                 <div className="text-center">
                   <Camera className="w-16 h-16 text-[#6B7280] mx-auto mb-4" />
                   <p className="text-[#9CA3AF]">Scanner Inactive</p>
                 </div>
+              ) : (
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  videoConstraints={{
+                    width: 1280,
+                    height: 720,
+                    facingMode: "user"
+                  }}
+                  className="w-full h-full object-cover rounded-2xl"
+                />
               )}
             </ScanFrame>
 
