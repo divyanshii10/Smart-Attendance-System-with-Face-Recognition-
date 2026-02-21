@@ -14,14 +14,14 @@ interface TableProps {
 
 export const Table = ({ columns, data, onRowClick }: TableProps) => {
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl">
+    <div className="overflow-x-auto rounded-xl border border-white/[0.06] bg-[#111827]">
       <table className="min-w-full text-white">
-        <thead className="bg-white/10">
+        <thead className="bg-white/[0.04]">
           <tr>
             {columns.map((column, index) => (
               <th
                 key={index}
-                className="px-6 py-3 text-left text-xs font-semibold text-blue-200 uppercase"
+                className="px-6 py-3 text-left text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider"
               >
                 {column.header}
               </th>
@@ -32,7 +32,7 @@ export const Table = ({ columns, data, onRowClick }: TableProps) => {
         <tbody>
           {data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-6 py-8 text-center text-blue-200">
+              <td colSpan={columns.length} className="px-6 py-8 text-center text-[#9CA3AF]">
                 No data available
               </td>
             </tr>
@@ -41,10 +41,10 @@ export const Table = ({ columns, data, onRowClick }: TableProps) => {
               <tr
                 key={rowIndex}
                 onClick={() => onRowClick?.(row)}
-                className="border-t border-white/10 hover:bg-white/10 transition"
+                className="border-t border-white/[0.06] hover:bg-white/[0.04] transition"
               >
                 {columns.map((column, colIndex) => (
-                  <td key={colIndex} className="px-6 py-4 text-sm">
+                  <td key={colIndex} className="px-6 py-4 text-sm text-[#E5E7EB]">
                     {column.render
                       ? column.render(row[column.accessor], row)
                       : row[column.accessor]}
@@ -61,7 +61,7 @@ export const Table = ({ columns, data, onRowClick }: TableProps) => {
 
 
 
-// 🔵 CYBER PAGINATION
+// Pagination
 
 interface PaginationProps {
   currentPage: number;
@@ -80,7 +80,7 @@ export const Pagination = ({
   return (
     <div className="flex items-center justify-between mt-6 text-white">
 
-      <p className="text-sm text-blue-200">
+      <p className="text-sm text-[#9CA3AF]">
         Page {currentPage} of {totalPages}
       </p>
 
@@ -89,7 +89,7 @@ export const Pagination = ({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40"
+          className="px-3 py-1 rounded-lg bg-white/[0.06] hover:bg-white/[0.10] disabled:opacity-40 text-[#E5E7EB] transition"
         >
           Prev
         </button>
@@ -99,10 +99,10 @@ export const Pagination = ({
             key={page}
             onClick={() => onPageChange(page)}
             className={`
-              px-3 py-1 rounded-lg
+              px-3 py-1 rounded-lg transition
               ${page === currentPage
-                ? 'bg-cyan-500 text-black'
-                : 'bg-white/10 hover:bg-white/20'}
+                ? 'bg-[#4F46E5] text-white'
+                : 'bg-white/[0.06] hover:bg-white/[0.10] text-[#E5E7EB]'}
             `}
           >
             {page}
@@ -112,7 +112,7 @@ export const Pagination = ({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40"
+          className="px-3 py-1 rounded-lg bg-white/[0.06] hover:bg-white/[0.10] disabled:opacity-40 text-[#E5E7EB] transition"
         >
           Next
         </button>

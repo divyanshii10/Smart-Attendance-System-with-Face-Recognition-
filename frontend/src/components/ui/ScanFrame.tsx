@@ -17,10 +17,10 @@ export const ScanFrame = ({
 
     const getStatusColor = () => {
         switch (status) {
-            case 'scanning': return 'border-neon-cyan';
-            case 'recognized': return 'border-green-500';
-            case 'failed': return 'border-red-500';
-            default: return 'border-cyan-400/30';
+            case 'scanning': return 'border-[#4F46E5]';
+            case 'recognized': return 'border-[#10B981]';
+            case 'failed': return 'border-[#EF4444]';
+            default: return 'border-white/10';
         }
     };
 
@@ -54,13 +54,13 @@ export const ScanFrame = ({
             {/* Corner brackets */}
             <div className="absolute inset-0 pointer-events-none">
                 {/* Top-left */}
-                <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-neon-cyan" />
+                <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#4F46E5]/60" />
                 {/* Top-right */}
-                <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-neon-cyan" />
+                <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-[#4F46E5]/60" />
                 {/* Bottom-left */}
-                <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-neon-cyan" />
+                <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-[#4F46E5]/60" />
                 {/* Bottom-right */}
-                <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-neon-cyan" />
+                <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#4F46E5]/60" />
             </div>
 
             {/* Content area */}
@@ -75,10 +75,10 @@ export const ScanFrame = ({
                     >
                         {/* Radar sweep */}
                         <motion.div
-                            className="absolute inset-0 border-2 border-neon-cyan/20 rounded-full"
+                            className="absolute inset-0 border-2 border-[#4F46E5]/20 rounded-full"
                             animate={{
                                 scale: [1, 1.5, 1],
-                                opacity: [0.5, 0, 0.5],
+                                opacity: [0.4, 0, 0.4],
                             }}
                             transition={{
                                 duration: 2,
@@ -92,11 +92,11 @@ export const ScanFrame = ({
                             <motion.div
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
-                                className="w-64 h-64 border-2 border-neon-cyan rounded-xl shadow-glow-cyan-lg"
+                                className="w-64 h-64 border-2 border-[#4F46E5] rounded-xl"
                             >
                                 {/* Scanning line */}
                                 <motion.div
-                                    className="absolute left-0 w-full h-1 bg-neon-cyan shadow-glow-cyan"
+                                    className="absolute left-0 w-full h-0.5 bg-[#4F46E5]"
                                     animate={{ top: ['0%', '100%'] }}
                                     transition={{
                                         duration: 2,
@@ -114,7 +114,7 @@ export const ScanFrame = ({
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute inset-0 bg-green-500/20 flex items-center justify-center"
+                        className="absolute inset-0 bg-[#10B981]/15 flex items-center justify-center"
                     >
                         <motion.div
                             animate={{
@@ -122,7 +122,7 @@ export const ScanFrame = ({
                                 opacity: [1, 0.5, 1],
                             }}
                             transition={{ duration: 1, repeat: 3 }}
-                            className="text-green-400 text-6xl"
+                            className="text-[#10B981] text-6xl"
                         >
                             ✓
                         </motion.div>
@@ -136,9 +136,9 @@ export const ScanFrame = ({
                     key={status}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`text-center text-sm font-medium ${status === 'recognized' ? 'text-green-400' :
-                        status === 'failed' ? 'text-red-400' :
-                            'text-cyan-300'
+                    className={`text-center text-sm font-medium ${status === 'recognized' ? 'text-[#10B981]' :
+                        status === 'failed' ? 'text-[#EF4444]' :
+                            'text-[#9CA3AF]'
                         }`}
                 >
                     {getStatusText()}
@@ -147,7 +147,7 @@ export const ScanFrame = ({
 
             {/* LIVE badge */}
             {isActive && (
-                <div className="absolute top-4 left-4 bg-red-500 px-3 py-1 rounded-lg text-sm font-semibold animate-pulse">
+                <div className="absolute top-4 left-4 bg-[#10B981] px-3 py-1 rounded-lg text-sm font-semibold text-white">
                     LIVE
                 </div>
             )}

@@ -19,9 +19,9 @@ export const StatusIndicator = ({
     switch (status) {
       case 'active':
         return {
-          dot: 'bg-purple-500',
-          text: 'text-purple-400',
-          bg: 'bg-purple-500/10 border-purple-500/30',
+          dot: 'bg-[#10B981]',
+          text: 'text-[#10B981]',
+          bg: 'bg-[#10B981]/10 border-[#10B981]/30',
         };
       case 'warning':
         return {
@@ -31,9 +31,9 @@ export const StatusIndicator = ({
         };
       case 'error':
         return {
-          dot: 'bg-red-500',
-          text: 'text-red-400',
-          bg: 'bg-red-500/10 border-red-500/30',
+          dot: 'bg-[#EF4444]',
+          text: 'text-[#EF4444]',
+          bg: 'bg-[#EF4444]/10 border-[#EF4444]/30',
         };
       default:
         return {

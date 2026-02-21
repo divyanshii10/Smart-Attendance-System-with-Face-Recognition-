@@ -30,9 +30,9 @@ export const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0B1120]">
 
-      {/* 🔵 AI Circuit Brain Background */}
+      {/* AI Circuit Brain Background */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-70"
         style={{
@@ -40,40 +40,40 @@ export const Login = () => {
         }}
       />
 
-      {/* 🔵 Dark Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-cyber-blue/30 to-black/90 backdrop-blur-sm" />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-[#0B1120]/80 backdrop-blur-sm" />
 
-      {/* 🔵 Login Container */}
+      {/* Login Container */}
       <div className="relative z-10 max-w-md w-full px-6">
 
         {/* Logo + Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-cyan-500/20 border border-cyan-400 rounded-2xl mb-4 backdrop-blur-md">
-            <Camera className="w-8 h-8 text-cyan-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#4F46E5]/20 border border-[#4F46E5]/40 rounded-2xl mb-4 backdrop-blur-md">
+            <Camera className="w-8 h-8 text-[#4F46E5]" />
           </div>
 
           <h1 className="text-3xl font-bold text-white tracking-wide">
             AttendEase AI
           </h1>
 
-          <p className="text-cyan-200 mt-2 text-sm">
+          <p className="text-[#9CA3AF] mt-2 text-sm">
             Facial Recognition Attendance System
           </p>
         </div>
 
-        {/* 🔵 Glass Login Card */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 text-white">
+        {/* Glass Login Card */}
+        <div className="bg-[#111827]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] p-8 text-white">
 
           <div className="mb-6">
-            <h2 className="text-2xl font-bold">Welcome Back</h2>
-            <p className="text-gray-300 mt-1 text-sm">
+            <h2 className="text-2xl font-bold text-[#E5E7EB]">Welcome Back</h2>
+            <p className="text-[#9CA3AF] mt-1 text-sm">
               Sign in to access the AI dashboard
             </p>
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-500/20 border border-red-400/40 rounded-lg">
-              <p className="text-sm text-red-200">{error}</p>
+            <div className="mb-4 p-4 bg-[#EF4444]/15 border border-[#EF4444]/30 rounded-lg">
+              <p className="text-sm text-[#EF4444]">{error}</p>
             </div>
           )}
 
@@ -82,12 +82,12 @@ export const Login = () => {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-200 mb-2">
+              <label className="block text-sm font-medium text-[#9CA3AF] mb-2">
                 Email Address
               </label>
 
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-cyan-300" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4F46E5]" />
 
                 <input
                   type="email"
@@ -97,10 +97,11 @@ export const Login = () => {
                   required
                   className="
                     w-full pl-10 pr-4 py-3
-                    bg-white/10 border border-white/20
+                    bg-white/[0.05] border border-white/[0.08]
                     rounded-lg outline-none
-                    text-white placeholder-gray-400
-                    focus:ring-2 focus:ring-cyan-400
+                    text-white placeholder-[#6B7280]
+                    focus:ring-2 focus:ring-[#4F46E5]/50 focus:border-[#4F46E5]/50
+                    transition
                   "
                 />
               </div>
@@ -108,12 +109,12 @@ export const Login = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-200 mb-2">
+              <label className="block text-sm font-medium text-[#9CA3AF] mb-2">
                 Password
               </label>
 
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-cyan-300" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4F46E5]" />
 
                 <input
                   type="password"
@@ -123,10 +124,11 @@ export const Login = () => {
                   required
                   className="
                     w-full pl-10 pr-4 py-3
-                    bg-white/10 border border-white/20
+                    bg-white/[0.05] border border-white/[0.08]
                     rounded-lg outline-none
-                    text-white placeholder-gray-400
-                    focus:ring-2 focus:ring-cyan-400
+                    text-white placeholder-[#6B7280]
+                    focus:ring-2 focus:ring-[#4F46E5]/50 focus:border-[#4F46E5]/50
+                    transition
                   "
                 />
               </div>
@@ -139,12 +141,12 @@ export const Login = () => {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="mr-2 accent-cyan-400"
+                  className="mr-2 accent-[#4F46E5]"
                 />
-                <span className="text-gray-300">Remember me</span>
+                <span className="text-[#9CA3AF]">Remember me</span>
               </label>
 
-              <span className="text-cyan-300 hover:text-cyan-200 cursor-pointer">
+              <span className="text-[#4F46E5] hover:text-[#4338CA] cursor-pointer transition">
                 Forgot password?
               </span>
             </div>
@@ -154,22 +156,22 @@ export const Login = () => {
               type="submit"
               size="lg"
               isLoading={isLoading}
-              className="w-full bg-cyan-400 hover:bg-cyan-500 text-black font-semibold"
+              className="w-full"
             >
               Sign In
             </Button>
           </form>
 
           {/* Demo creds */}
-          <div className="mt-6 pt-6 border-t border-white/20">
-            <p className="text-xs text-center text-gray-400">
+          <div className="mt-6 pt-6 border-t border-white/[0.06]">
+            <p className="text-xs text-center text-[#6B7280]">
               Demo: admin@college.edu / admin123
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-gray-500 mt-6">
+        <p className="text-center text-xs text-[#6B7280] mt-6">
           Powered by Computer Vision & Deep Learning
         </p>
       </div>

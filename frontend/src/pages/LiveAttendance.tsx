@@ -93,8 +93,8 @@ export const LiveAttendance = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className="text-3xl white font-bold  font-tech">Live Attendance</h1>
-        <p className="text-purple-400 mt-1">Real-time biometric face recognition system</p>
+        <h1 className="text-3xl text-[#E5E7EB] font-bold">Live Attendance</h1>
+        <p className="text-[#9CA3AF] mt-1">Real-time biometric face recognition system</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -108,8 +108,8 @@ export const LiveAttendance = () => {
             >
               {!isActive && (
                 <div className="text-center">
-                  <Camera className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-300">Scanner Inactive</p>
+                  <Camera className="w-16 h-16 text-[#6B7280] mx-auto mb-4" />
+                  <p className="text-[#9CA3AF]">Scanner Inactive</p>
                 </div>
               )}
             </ScanFrame>
@@ -144,160 +144,156 @@ export const LiveAttendance = () => {
         <div className="space-y-6">
           {/* System Status */}
           <Card title="System Status">
-  <div className="space-y-3">
+            <div className="space-y-3">
 
-    {/* Scanner */}
-    <div className="
+              {/* Scanner */}
+              <div className="
       flex items-center justify-between
       p-4
-      bg-[#0B1220]
-      border border-white/10
+      bg-[#0B1120]
+      border border-white/[0.06]
       rounded-xl
-      hover:border-purple-500/40
-      hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+      hover:border-[#4F46E5]/25
       transition-all
     ">
-      <div>
-        <p className="text-sm text-white font-medium">
-          Scanner
-        </p>
-        <p className="text-xs text-gray-400">
-          {isActive ? 'Capturing biometric data' : 'Ready to start'}
-        </p>
-      </div>
+                <div>
+                  <p className="text-sm text-[#E5E7EB] font-medium">
+                    Scanner
+                  </p>
+                  <p className="text-xs text-[#9CA3AF]">
+                    {isActive ? 'Capturing biometric data' : 'Ready to start'}
+                  </p>
+                </div>
 
-      <div className={`
+                <div className={`
         w-3 h-3 rounded-full
-        ${isActive ? 'bg-purple-500' : 'bg-gray-500'}
-      `}/>
-    </div>
+        ${isActive ? 'bg-[#10B981]' : 'bg-[#6B7280]'}
+      `} />
+              </div>
 
-    {/* Face Detection */}
-    <div className="
+              {/* Face Detection */}
+              <div className="
       flex items-center justify-between
       p-4
-      bg-[#0B1220]
-      border border-white/10
+      bg-[#0B1120]
+      border border-white/[0.06]
       rounded-xl
-      hover:border-purple-500/40
-      hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+      hover:border-[#4F46E5]/25
       transition-all
     ">
-      <div>
-        <p className="text-sm text-white font-medium">
-          Face Detection
-        </p>
-        <p className="text-xs text-gray-400">
-          {faceDetected ? 'Face in frame' : 'Waiting for face'}
-        </p>
-      </div>
+                <div>
+                  <p className="text-sm text-[#E5E7EB] font-medium">
+                    Face Detection
+                  </p>
+                  <p className="text-xs text-[#9CA3AF]">
+                    {faceDetected ? 'Face in frame' : 'Waiting for face'}
+                  </p>
+                </div>
 
-      <div className={`
+                <div className={`
         w-3 h-3 rounded-full
-        ${faceDetected ? 'bg-purple-500' : 'bg-gray-500'}
-      `}/>
-    </div>
+        ${faceDetected ? 'bg-[#10B981]' : 'bg-[#6B7280]'}
+      `} />
+              </div>
 
-    {/* ID Verification */}
-    <div className="
+              {/* ID Verification */}
+              <div className="
       flex items-center justify-between
       p-4
-      bg-[#0B1220]
-      border border-white/10
+      bg-[#0B1120]
+      border border-white/[0.06]
       rounded-xl
-      hover:border-purple-500/40
-      hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+      hover:border-[#4F46E5]/25
       transition-all
     ">
-      <div>
-        <p className="text-sm text-white font-medium">
-          ID Verification
-        </p>
-        <p className="text-xs text-gray-400">
-          {idScanned ? 'Identity confirmed' : 'Pending verification'}
-        </p>
-      </div>
+                <div>
+                  <p className="text-sm text-[#E5E7EB] font-medium">
+                    ID Verification
+                  </p>
+                  <p className="text-xs text-[#9CA3AF]">
+                    {idScanned ? 'Identity confirmed' : 'Pending verification'}
+                  </p>
+                </div>
 
-      <div className={`
+                <div className={`
         w-3 h-3 rounded-full
-        ${idScanned ? 'bg-purple-500' : 'bg-gray-500'}
-      `}/>
-    </div>
+        ${idScanned ? 'bg-[#10B981]' : 'bg-[#6B7280]'}
+      `} />
+              </div>
 
-    {/* Today's Stats */}
-    <div className="
+              {/* Today's Stats */}
+              <div className="
       p-4
-      bg-[#0B1220]
-      border border-white/10
+      bg-[#0B1120]
+      border border-white/[0.06]
       rounded-xl
       mt-2
     ">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-sm text-gray-300">
-          Today's Stats
-        </span>
-      </div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-[#9CA3AF]">
+                    Today's Stats
+                  </span>
+                </div>
 
-      <div className="flex justify-between text-sm">
-        <span className="text-gray-400">Verified</span>
-        <span className="text-white font-semibold">132</span>
-      </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#9CA3AF]">Verified</span>
+                  <span className="text-[#E5E7EB] font-semibold">132</span>
+                </div>
 
-      <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-400">Failed</span>
-        <span className="text-white font-semibold">3</span>
-      </div>
-    </div>
+                <div className="flex justify-between text-sm mt-1">
+                  <span className="text-[#9CA3AF]">Failed</span>
+                  <span className="text-[#E5E7EB] font-semibold">3</span>
+                </div>
+              </div>
 
-  </div>
-</Card>
+            </div>
+          </Card>
 
           {/* Activity Log */}
           <Card title="Activity Log">
-  <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
+            <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin">
 
-    {logs.length === 0 ? (
-      <p className="text-sm text-gray-400 text-center py-8">
-        No activity yet
-      </p>
-    ) : (
-      logs.map((log, index) => (
-        <motion.div
-          key={log.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.05 }}
-          className="
+              {logs.length === 0 ? (
+                <p className="text-sm text-[#9CA3AF] text-center py-8">
+                  No activity yet
+                </p>
+              ) : (
+                logs.map((log, index) => (
+                  <motion.div
+                    key={log.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="
             flex items-center justify-between
             p-4
-            bg-[#0B1220]
-            border border-white/10
+            bg-[#0B1120]
+            border border-white/[0.06]
             rounded-xl
-            hover:border-purple-500/40
-            hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+            hover:border-[#4F46E5]/25
             transition-all
           "
-        >
-          {/* Left */}
-          <div className="flex flex-col">
-            <p className="text-sm text-white font-medium">
-              {log.message}
-            </p>
-            <p className="text-xs text-gray-400">
-              System Event
-            </p>
-          </div>
+                  >
+                    {/* Left */}
+                    <div className="flex flex-col">
+                      <p className="text-sm text-[#E5E7EB] font-medium">
+                        {log.message}
+                      </p>
+                      <p className="text-xs text-[#9CA3AF]">
+                        System Event
+                      </p>
+                    </div>
 
-          {/* Right */}
-          <span className="text-xs text-gray-500">
-            {log.timestamp}
-          </span>
-        </motion.div>
-      ))
-    )}
+                    {/* Right */}
+                    <span className="text-xs text-[#6B7280]">
+                      {log.timestamp}
+                    </span>
+                  </motion.div>
+                ))
+              )}
 
-  </div>
-</Card>
+            </div>
+          </Card>
         </div>
       </div>
     </div>

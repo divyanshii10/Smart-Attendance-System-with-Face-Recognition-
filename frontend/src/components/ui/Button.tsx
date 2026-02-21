@@ -22,13 +22,13 @@ export const Button = ({
 
   const variants = {
     primary:
-      'bg-cyan-500 hover:bg-cyan-450 text-black shadow-[0_0_15px_rgba(0,255,255,0.4)] hover:shadow-[0_0_20px_rgba(0,255,255,0.5)]',
+      'bg-[#4F46E5] hover:bg-[#4338CA] text-white',
     success:
-      'bg-green-500 hover:bg-green-450 text-black shadow-[0_0_15px_rgba(0,255,0,0.4)] hover:shadow-[0_0_20px_rgba(0,255,0,0.5)]',
+      'bg-[#10B981] hover:bg-[#059669] text-white',
     danger:
-      'bg-red-500 hover:bg-red-450 text-white shadow-[0_0_15px_rgba(255,0,0,0.4)] hover:shadow-[0_0_20px_rgba(255,0,0,0.5)]',
+      'bg-[#EF4444] hover:bg-[#DC2626] text-white',
     outline:
-      'border border-cyan-400 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_rgba(0,255,255,0.3)]',
+      'border border-[#4F46E5]/50 text-[#4F46E5] hover:bg-[#4F46E5]/10',
   };
 
   const sizes = {
@@ -65,7 +65,7 @@ export const Button = ({
       {/* Ripple effect */}
       {!disabled && !isLoading && (
         <motion.span
-          className="absolute inset-0 rounded-xl bg-white/20"
+          className="absolute inset-0 rounded-xl bg-white/10"
           initial={{ scale: 0, opacity: 0.5 }}
           whileTap={{ scale: 2, opacity: 0 }}
           transition={{ duration: 0.4 }}

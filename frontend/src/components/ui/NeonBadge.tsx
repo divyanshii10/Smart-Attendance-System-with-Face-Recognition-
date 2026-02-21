@@ -18,34 +18,34 @@ export const NeonBadge = ({
 
     const colorStyles = {
         cyan: {
-            solid: 'bg-neon-cyan/20 text-neon-cyan border-neon-cyan/50',
-            outline: 'bg-transparent text-neon-cyan border-neon-cyan',
-            glow: 'bg-neon-cyan/20 text-neon-cyan border-neon-cyan shadow-glow-cyan',
+            solid: 'bg-[#4F46E5]/15 text-[#4F46E5] border-[#4F46E5]/40',
+            outline: 'bg-transparent text-[#4F46E5] border-[#4F46E5]',
+            glow: 'bg-[#4F46E5]/15 text-[#4F46E5] border-[#4F46E5]/40',
         },
         green: {
-            solid: 'bg-green-500/20 text-green-400 border-green-500/50',
-            outline: 'bg-transparent text-green-400 border-green-500',
-            glow: 'bg-green-500/20 text-green-400 border-green-500 shadow-glow-green',
+            solid: 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/40',
+            outline: 'bg-transparent text-[#10B981] border-[#10B981]',
+            glow: 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/40',
         },
         red: {
-            solid: 'bg-red-500/20 text-red-400 border-red-500/50',
-            outline: 'bg-transparent text-red-400 border-red-500',
-            glow: 'bg-red-500/20 text-red-400 border-red-500 shadow-glow-red',
+            solid: 'bg-[#EF4444]/15 text-[#EF4444] border-[#EF4444]/40',
+            outline: 'bg-transparent text-[#EF4444] border-[#EF4444]',
+            glow: 'bg-[#EF4444]/15 text-[#EF4444] border-[#EF4444]/40',
         },
         yellow: {
-            solid: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50',
+            solid: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/40',
             outline: 'bg-transparent text-yellow-400 border-yellow-500',
-            glow: 'bg-yellow-500/20 text-yellow-400 border-yellow-500 shadow-[0_0_20px_rgba(255,255,0,0.5)]',
+            glow: 'bg-yellow-500/15 text-yellow-400 border-yellow-500/40',
         },
         blue: {
-            solid: 'bg-blue-500/20 text-blue-400 border-blue-500/50',
-            outline: 'bg-transparent text-blue-400 border-blue-500',
-            glow: 'bg-blue-500/20 text-blue-400 border-blue-500 shadow-glow-blue',
+            solid: 'bg-[#4F46E5]/15 text-[#4F46E5] border-[#4F46E5]/40',
+            outline: 'bg-transparent text-[#4F46E5] border-[#4F46E5]',
+            glow: 'bg-[#4F46E5]/15 text-[#4F46E5] border-[#4F46E5]/40',
         },
         purple: {
-            solid: 'bg-purple-500/20 text-purple-400 border-purple-500/50',
-            outline: 'bg-transparent text-purple-400 border-purple-500',
-            glow: 'bg-purple-500/20 text-purple-400 border-purple-500 shadow-glow-purple',
+            solid: 'bg-[#4F46E5]/15 text-[#4F46E5] border-[#4F46E5]/40',
+            outline: 'bg-transparent text-[#4F46E5] border-[#4F46E5]',
+            glow: 'bg-[#4F46E5]/15 text-[#4F46E5] border-[#4F46E5]/40',
         },
     };
 

@@ -59,7 +59,7 @@ export const Settings = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-700"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
       </div>
     );
   }
@@ -67,139 +67,140 @@ export const Settings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl white font-bold  font-tech">Settings</h1>
-        <p className="text-purple-400 mt-1">Configure system preferences</p>
+        <h1 className="text-3xl text-[#E5E7EB] font-bold">Settings</h1>
+        <p className="text-[#9CA3AF] mt-1">Configure system preferences</p>
       </div>
 
       {successMessage && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <p className="text-sm text-green-800">{successMessage}</p>
+        <div className="bg-[#10B981]/10 border border-[#10B981]/30 rounded-lg p-4">
+          <p className="text-sm text-[#10B981]">{successMessage}</p>
         </div>
       )}
 
       <Card title="Camera Settings">
 
-  <div className="space-y-4">
+        <div className="space-y-4">
 
-    {/* Camera Device */}
-    <div className="panel-card">
-      <label className="text-sm text-gray-400 block mb-2">
-        Camera Device
-      </label>
+          {/* Camera Device */}
+          <div className="panel-card">
+            <label className="text-sm text-[#9CA3AF] block mb-2">
+              Camera Device
+            </label>
 
-      <select
-        value={settings.cameraId}
-        onChange={(e) =>
-          setSettings({ ...settings, cameraId: e.target.value })
-        }
-        className="
+            <select
+              value={settings.cameraId}
+              onChange={(e) =>
+                setSettings({ ...settings, cameraId: e.target.value })
+              }
+              className="
           w-full bg-transparent
-          border border-white/10
-          text-white
+          border border-white/[0.06]
+          text-[#E5E7EB]
           px-3 py-2 rounded-lg
-          focus:outline-none focus:border-purple-400
+          focus:outline-none focus:border-[#4F46E5]/50
+          transition
         "
-      >
-        <option className="bg-black">Default Camera</option>
-        <option className="bg-black">Front Camera</option>
-        <option className="bg-black">Back Camera</option>
-        <option className="bg-black">External Camera</option>
-      </select>
+            >
+              <option className="bg-[#111827]">Default Camera</option>
+              <option className="bg-[#111827]">Front Camera</option>
+              <option className="bg-[#111827]">Back Camera</option>
+              <option className="bg-[#111827]">External Camera</option>
+            </select>
 
-      <p className="text-xs text-gray-500 mt-2">
-        Select the camera device for face recognition
-      </p>
-    </div>
+            <p className="text-xs text-[#6B7280] mt-2">
+              Select the camera device for face recognition
+            </p>
+          </div>
 
-    {/* Confidence Slider */}
-    <div className="panel-card">
-      <label className="text-sm text-gray-400 block mb-3">
-        Confidence Threshold: {settings.confidenceThreshold}%
-      </label>
+          {/* Confidence Slider */}
+          <div className="panel-card">
+            <label className="text-sm text-[#9CA3AF] block mb-3">
+              Confidence Threshold: {settings.confidenceThreshold}%
+            </label>
 
-      <input
-        type="range"
-        min="50"
-        max="100"
-        value={settings.confidenceThreshold}
-        onChange={(e) =>
-          setSettings({
-            ...settings,
-            confidenceThreshold: parseInt(e.target.value)
-          })
-        }
-        className="w-full accent-purple-500"
-      />
+            <input
+              type="range"
+              min="50"
+              max="100"
+              value={settings.confidenceThreshold}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  confidenceThreshold: parseInt(e.target.value)
+                })
+              }
+              className="w-full accent-[#4F46E5]"
+            />
 
-      <div className="flex justify-between text-xs text-gray-500 mt-2">
-        <span>Less Strict</span>
-        <span>More Strict</span>
-      </div>
-    </div>
+            <div className="flex justify-between text-xs text-[#6B7280] mt-2">
+              <span>Less Strict</span>
+              <span>More Strict</span>
+            </div>
+          </div>
 
-  </div>
+        </div>
 
-</Card>
+      </Card>
 
       <Card title="Notification Settings">
 
-  <div className="space-y-4">
+        <div className="space-y-4">
 
-    {/* Enable Notifications */}
-    <label className="panel-card flex justify-between items-center cursor-pointer">
+          {/* Enable Notifications */}
+          <label className="panel-card flex justify-between items-center cursor-pointer">
 
-      <div>
-        <p className="text-white font-medium">
-          Enable Notifications
-        </p>
-        <p className="text-gray-400 text-sm">
-          Receive alerts for attendance events
-        </p>
-      </div>
+            <div>
+              <p className="text-[#E5E7EB] font-medium">
+                Enable Notifications
+              </p>
+              <p className="text-[#9CA3AF] text-sm">
+                Receive alerts for attendance events
+              </p>
+            </div>
 
-      <input
-        type="checkbox"
-        checked={settings.notificationsEnabled}
-        onChange={(e) =>
-          setSettings({
-            ...settings,
-            notificationsEnabled: e.target.checked
-          })
-        }
-        className="accent-purple-500 w-5 h-5"
-      />
+            <input
+              type="checkbox"
+              checked={settings.notificationsEnabled}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  notificationsEnabled: e.target.checked
+                })
+              }
+              className="accent-[#4F46E5] w-5 h-5"
+            />
 
-    </label>
+          </label>
 
-    {/* Auto Export */}
-    <label className="panel-card flex justify-between items-center cursor-pointer">
+          {/* Auto Export */}
+          <label className="panel-card flex justify-between items-center cursor-pointer">
 
-      <div>
-        <p className="text-white font-medium">
-          Auto Export Reports
-        </p>
-        <p className="text-gray-400 text-sm">
-          Automatically export daily reports
-        </p>
-      </div>
+            <div>
+              <p className="text-[#E5E7EB] font-medium">
+                Auto Export Reports
+              </p>
+              <p className="text-[#9CA3AF] text-sm">
+                Automatically export daily reports
+              </p>
+            </div>
 
-      <input
-        type="checkbox"
-        checked={settings.autoExport}
-        onChange={(e) =>
-          setSettings({
-            ...settings,
-            autoExport: e.target.checked
-          })
-        }
-        className="accent-purple-500 w-5 h-5"
-      />
+            <input
+              type="checkbox"
+              checked={settings.autoExport}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  autoExport: e.target.checked
+                })
+              }
+              className="accent-[#4F46E5] w-5 h-5"
+            />
 
-    </label>
+          </label>
 
-  </div>
+        </div>
 
-</Card>
+      </Card>
 
       <div className="flex justify-end gap-3">
         <Button variant="outline" onClick={() => window.location.reload()}>
@@ -217,41 +218,41 @@ export const Settings = () => {
 
       <Card title="System Settings">
 
-  <div className="space-y-4">
+        <div className="space-y-4">
 
-    {/* Warning Panel */}
-    <div className="panel-card border-yellow-500/30 bg-yellow-500/5">
+          {/* Warning Panel */}
+          <div className="panel-card border-yellow-500/30 bg-yellow-500/5">
 
-      <p className="text-yellow-400 font-medium text-sm">
-        Database Operations
-      </p>
+            <p className="text-yellow-400 font-medium text-sm">
+              Database Operations
+            </p>
 
-      <p className="text-yellow-300/70 text-xs mt-1">
-        These operations will affect your system data. Use with caution.
-      </p>
+            <p className="text-yellow-300/70 text-xs mt-1">
+              These operations will affect your system data. Use with caution.
+            </p>
 
-    </div>
+          </div>
 
-    {/* Buttons */}
-    <div className="flex flex-wrap gap-3">
+          {/* Buttons */}
+          <div className="flex flex-wrap gap-3">
 
-      <Button variant="outline">
-        Backup Database
-      </Button>
+            <Button variant="outline">
+              Backup Database
+            </Button>
 
-      <Button variant="outline">
-        Export All Data
-      </Button>
+            <Button variant="outline">
+              Export All Data
+            </Button>
 
-      <Button variant="danger" onClick={handleReset}>
-        Reset Settings
-      </Button>
+            <Button variant="danger" onClick={handleReset}>
+              Reset Settings
+            </Button>
 
-    </div>
+          </div>
 
-  </div>
+        </div>
 
-</Card>
+      </Card>
     </div>
   );
 };

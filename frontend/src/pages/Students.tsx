@@ -101,7 +101,7 @@ export const Students = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-700"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
       </div>
     );
   }
@@ -110,8 +110,8 @@ export const Students = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl white font-bold  font-tech">Students</h1>
-          <p className="text-purple-400 mt-1">Manage student records</p>
+          <h1 className="text-3xl text-[#E5E7EB] font-bold">Students</h1>
+          <p className="text-[#9CA3AF] mt-1">Manage student records</p>
         </div>
         <Button
           variant="primary"
@@ -124,7 +124,7 @@ export const Students = () => {
       <Card>
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
             <input
               type="text"
               placeholder="Search by name, roll number, or email..."
@@ -132,33 +132,35 @@ export const Students = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="
                 w-full pl-10 pr-4 py-2
-                bg-[#0B1220]
-                border border-white/10
+                bg-[#0B1120]
+                border border-white/[0.06]
                 rounded-lg
-                text-white
-                placeholder-gray-400
-                focus:ring-2 focus:ring-purple-500
+                text-[#E5E7EB]
+                placeholder-[#6B7280]
+                focus:ring-2 focus:ring-[#4F46E5]/50 focus:border-[#4F46E5]/50
                 outline-none
+                transition
               "
             />
           </div>
           <div className="flex gap-2">
             <div className="relative">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
               <select
-                  value={selectedDept}
-                  onChange={(e) => setSelectedDept(e.target.value)}
-                  className="
+                value={selectedDept}
+                onChange={(e) => setSelectedDept(e.target.value)}
+                className="
                     pl-10 pr-8 py-2
-                    bg-[#0B1220]
-                    border border-white/10
+                    bg-[#0B1120]
+                    border border-white/[0.06]
                     rounded-lg
-                    text-white
-                    focus:ring-2 focus:ring-purple-500
+                    text-[#E5E7EB]
+                    focus:ring-2 focus:ring-[#4F46E5]/50 focus:border-[#4F46E5]/50
                     outline-none
                     appearance-none
+                    transition
                   "
-                >
+              >
                 <option value="">All Departments</option>
                 {departments.map((dept) => (
                   <option key={dept.id} value={dept.name}>
@@ -171,17 +173,15 @@ export const Students = () => {
         </div>
 
         <div className="mb-4">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#6B7280]">
             Showing {paginatedStudents.length} of {filteredStudents.length} students
           </p>
         </div>
 
-            {/* <Card> */}
-              <div className="card-ui p-4 rounded-xl">
-            <Table columns={columns} data={paginatedStudents} />
-             </div>
-           {/* </Card> */}
-           
+        <div className="card-ui p-4 rounded-xl">
+          <Table columns={columns} data={paginatedStudents} />
+        </div>
+
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}

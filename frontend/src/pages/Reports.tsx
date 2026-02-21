@@ -68,7 +68,7 @@ export const Reports = () => {
       header: 'Method',
       accessor: 'method',
       render: (value: string) => (
-        <span className="text-xs text-gray-600 capitalize">{value.replace('_', ' ')}</span>
+        <span className="text-xs text-[#9CA3AF] capitalize">{value.replace('_', ' ')}</span>
       )
     },
     {
@@ -88,8 +88,8 @@ export const Reports = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl white font-bold  font-tech">Reports</h1>
-          <p className="text-purple-400 mt-1">Attendance analytics and reports</p>
+          <h1 className="text-3xl text-[#E5E7EB] font-bold">Reports</h1>
+          <p className="text-[#9CA3AF] mt-1">Attendance analytics and reports</p>
         </div>
         <Button
           variant="primary"
@@ -101,125 +101,127 @@ export const Reports = () => {
         </Button>
       </div>
 
-     <Card className="card-ui">
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <Card className="card-ui">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    {/* Start Date */}
-    <div>
-      <label className="block text-sm text-gray-400 mb-2">
-        Start Date
-      </label>
+          {/* Start Date */}
+          <div>
+            <label className="block text-sm text-[#9CA3AF] mb-2">
+              Start Date
+            </label>
 
-      <div className="relative">
-        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4F46E5]" />
 
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="
             w-full pl-10 pr-4 py-3
-            bg-[#0B1220]
-            border border-white/10
+            bg-[#0B1120]
+            border border-white/[0.06]
             rounded-lg
-            text-white
-            focus:border-purple-500
-            focus:ring-1 focus:ring-purple-500
+            text-[#E5E7EB]
+            focus:border-[#4F46E5]/50
+            focus:ring-1 focus:ring-[#4F46E5]/50
             outline-none
+            transition
           "
-        />
-      </div>
-    </div>
+              />
+            </div>
+          </div>
 
-    {/* End Date */}
-    <div>
-      <label className="block text-sm text-gray-400 mb-2">
-        End Date
-      </label>
+          {/* End Date */}
+          <div>
+            <label className="block text-sm text-[#9CA3AF] mb-2">
+              End Date
+            </label>
 
-      <div className="relative">
-        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4F46E5]" />
 
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="
             w-full pl-10 pr-4 py-3
-            bg-[#0B1220]
-            border border-white/10
+            bg-[#0B1120]
+            border border-white/[0.06]
             rounded-lg
-            text-white
-            focus:border-purple-500
-            focus:ring-1 focus:ring-purple-500
+            text-[#E5E7EB]
+            focus:border-[#4F46E5]/50
+            focus:ring-1 focus:ring-[#4F46E5]/50
             outline-none
+            transition
           "
-        />
-      </div>
-    </div>
+              />
+            </div>
+          </div>
 
-  </div>
-</Card>
+        </div>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="card-ui">
-  <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
 
-    <div>
-      <p className="text-sm text-gray-400">
-        Total Records
-      </p>
+            <div>
+              <p className="text-sm text-[#9CA3AF]">
+                Total Records
+              </p>
 
-      <p className="text-3xl font-bold text-white mt-2 stat-number">
-        {totalRecords}
-      </p>
-    </div>
+              <p className="text-3xl font-bold text-[#E5E7EB] mt-2 stat-number">
+                {totalRecords}
+              </p>
+            </div>
 
-    <div className="
+            <div className="
       p-3 rounded-xl
-      bg-purple-500/10
-      border border-purple-500/20
+      bg-[#4F46E5]/10
+      border border-[#4F46E5]/20
     ">
-      <FileText className="w-6 h-6 text-purple-400" />
-    </div>
+              <FileText className="w-6 h-6 text-[#4F46E5]" />
+            </div>
 
-  </div>
-</Card>
+          </div>
+        </Card>
 
         <Card className="card-ui">
-  <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
 
-    <div>
-      <p className="text-sm text-gray-400">
-        Present Count
-      </p>
+            <div>
+              <p className="text-sm text-[#9CA3AF]">
+                Present Count
+              </p>
 
-      <p className="text-3xl font-bold text-green-400 mt-2 stat-number">
-        {presentCount}
-      </p>
-    </div>
+              <p className="text-3xl font-bold text-[#10B981] mt-2 stat-number">
+                {presentCount}
+              </p>
+            </div>
 
-    <div className="
+            <div className="
       p-3 rounded-xl
-      bg-green-500/10
-      border border-green-500/20
+      bg-[#10B981]/10
+      border border-[#10B981]/20
     ">
-      <TrendingUp className="w-6 h-6 text-green-400" />
-    </div>
+              <TrendingUp className="w-6 h-6 text-[#10B981]" />
+            </div>
 
-  </div>
-</Card>
+          </div>
+        </Card>
 
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400">Attendance Rate</p>
-              <p className="text-3xl font-bold text-white mt-2 stat-number">{attendanceRate}%</p>
+              <p className="text-sm text-[#9CA3AF]">Attendance Rate</p>
+              <p className="text-3xl font-bold text-[#E5E7EB] mt-2 stat-number">{attendanceRate}%</p>
             </div>
             <div className="p-3 rounded-xl
-      bg-purple-500/10
-      border border-purple-500/20">
-              <TrendingUp className="w-6 h-6 text-purple-400" />
+      bg-[#4F46E5]/10
+      border border-[#4F46E5]/20">
+              <TrendingUp className="w-6 h-6 text-[#4F46E5]" />
             </div>
           </div>
         </Card>
@@ -227,42 +229,42 @@ export const Reports = () => {
 
       <Card className="card-ui">
 
-  <h3 className="text-lg font-semibold text-purple-400 mb-6">
-    Attendance Trend
-  </h3>
+        <h3 className="text-lg font-semibold text-[#E5E7EB] mb-6">
+          Attendance Trend
+        </h3>
 
-  <div className="panel-card">
-    <AttendanceChart data={chartData} type="bar" />
-  </div>
+        <div className="panel-card">
+          <AttendanceChart data={chartData} type="bar" />
+        </div>
 
-</Card>
+      </Card>
 
       <Card className="card-ui">
 
-  <h3 className="text-lg font-semibold text-purple-400 mb-6">
-    Detailed Records
-  </h3>
+        <h3 className="text-lg font-semibold text-[#E5E7EB] mb-6">
+          Detailed Records
+        </h3>
 
-  {loading ? (
-    <div className="flex justify-center py-12">
-      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-400"></div>
-    </div>
-  ) : (
-    <>
-      <p className="text-gray-400 text-sm mb-4">
-        Showing {records.length} records from {formatDate(startDate)} to {formatDate(endDate)}
-      </p>
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#4F46E5]"></div>
+          </div>
+        ) : (
+          <>
+            <p className="text-[#9CA3AF] text-sm mb-4">
+              Showing {records.length} records from {formatDate(startDate)} to {formatDate(endDate)}
+            </p>
 
-      <div className="panel-card p-2">
-        <div className="card-ui p-4 rounded-xl">
-             <Table columns={columns} data={records} />
-             </div>
-       
-      </div>
-    </>
-  )}
+            <div className="panel-card p-2">
+              <div className="card-ui p-4 rounded-xl">
+                <Table columns={columns} data={records} />
+              </div>
 
-</Card>
+            </div>
+          </>
+        )}
+
+      </Card>
     </div>
   );
 };

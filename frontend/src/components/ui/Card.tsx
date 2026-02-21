@@ -25,11 +25,10 @@ export const Card = ({ children, className = "", title, animate = true }: CardPr
       {...animationProps}
       className={`
         rounded-2xl
-        border border-cyan-400/20
-        bg-white/5
-        backdrop-blur-2xl
-        shadow-[0_0_25px_rgba(0,255,255,0.08)]
-        hover:shadow-[0_0_40px_rgba(0,255,255,0.18)]
+        border border-white/[0.06]
+        bg-[#111827]
+        shadow-[0_4px_24px_rgba(0,0,0,0.3)]
+        hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]
         transition-all duration-300
         p-5
         text-white
@@ -37,7 +36,7 @@ export const Card = ({ children, className = "", title, animate = true }: CardPr
       `}
     >
       {title && (
-        <h3 className="text-lg font-semibold mb-4 gradient-text">{title}</h3>
+        <h3 className="text-lg font-semibold mb-4 text-[#E5E7EB]">{title}</h3>
       )}
       {children}
     </Component>
@@ -89,13 +88,6 @@ export const StatCard = ({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const glow = {
-    blue: 'shadow-cyan-500/30',
-    green: 'shadow-green-500/30',
-    red: 'shadow-red-500/30',
-    yellow: 'shadow-yellow-500/30',
-  };
-
   const isNumeric = typeof value === 'number';
 
   return (
@@ -104,23 +96,23 @@ export const StatCard = ({
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
       animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      whileHover={{ scale: 1.02, y: -5 }}
+      whileHover={{ scale: 1.02, y: -4 }}
       className={`
         rounded-2xl
-        border border-white/10
-        bg-white/5
-        backdrop-blur-xl
+        border border-white/[0.06]
+        bg-[#111827]
         p-6
         text-white
-        shadow-lg ${glow[color]}
+        shadow-[0_4px_24px_rgba(0,0,0,0.3)]
         cursor-pointer
+        transition-all duration-300
       `}
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-blue-200">{title}</p>
+          <p className="text-sm text-[#9CA3AF]">{title}</p>
           <motion.p
-            className="text-3xl font-bold mt-2"
+            className="text-3xl font-bold mt-2 text-[#E5E7EB]"
             initial={{ scale: 0.8 }}
             animate={isInView ? { scale: 1 } : { scale: 0.8 }}
             transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
@@ -133,7 +125,7 @@ export const StatCard = ({
               initial={{ opacity: 0, x: -10 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
               transition={{ delay: 0.4 }}
-              className={`text-sm mt-2 ${trend.isPositive ? 'text-green-400' : 'text-red-400'}`}
+              className={`text-sm mt-2 ${trend.isPositive ? 'text-[#10B981]' : 'text-[#EF4444]'}`}
             >
               {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
             </motion.p>
@@ -141,7 +133,7 @@ export const StatCard = ({
         </div>
 
         <motion.div
-          className="p-4 rounded-xl bg-white/10 backdrop-blur-lg"
+          className="p-4 rounded-xl bg-[#4F46E5]/10 border border-[#4F46E5]/20"
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6 }}
         >
