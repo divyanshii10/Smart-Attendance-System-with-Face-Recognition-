@@ -146,6 +146,11 @@ export const attendanceAPI = {
   getRecords: async (startDate: string, endDate: string): Promise<AttendanceRecord[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     return mockAttendanceRecords;
+  },
+
+  getTodayStats: async () => {
+    const res = await fetch("http://127.0.0.1:8000/attendance/today-stats");
+    return res.json();
   }
 };
 

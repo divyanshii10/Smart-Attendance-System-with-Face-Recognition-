@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 from database.db import SessionLocal
 from database.models import Student
-from services.face_service import extract_face_encoding
-import base64
+import numpy as np
+import io
 import os
+from PIL import Image
 
 student_bp = Blueprint("students", __name__)
 
@@ -14,30 +15,41 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @student_bp.route("/register", methods=["POST"])
 def register_student():
 
-    data = request.json
+    name = request.form.get("name")
+    roll_number = request.form.get("roll_number")
+    department = request.form.get("department")
+    year = request.form.get("year", "")
+    email = request.form.get("email", "")
 
-    name = data["name"]
-    roll_number = data["rollNumber"]
-    department = data["department"]
-    image_base64 = data["image_base64"]
+    if not name or not roll_number or not department:
+        return jsonify({"error": "Missing required fields"}), 400
 
-    # Extract face encoding
-    encoding = extract_face_encoding(image_base64)
+    image_file = request.files.get("image")
+    if not image_file:
+        return jsonify({"error": "No image uploaded"}), 400
 
-    if encoding is None:
-        return jsonify({"error": "No face detected"}), 400
+    # Read image bytes and extract face encoding
+    img_bytes = image_file.read()
+    image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+    image_np = np.array(image)
 
-    # Save image locally
+    import face_recognition
+    encodings = face_recognition.face_encodings(image_np)
+    if not encodings:
+        return jsonify({"error": "No face detected in the image"}), 400
+
+    encoding = encodings[0].tolist()
+
+    # Save image to disk
     file_path = f"{UPLOAD_FOLDER}/{roll_number}.jpg"
+    image.save(file_path)
 
-    header, encoded = image_base64.split(",", 1)
-    img_bytes = base64.b64decode(encoded)
-
-    with open(file_path, "wb") as f:
-        f.write(img_bytes)
-
-    # Store in DB
+    # Check for duplicate roll number
     db = SessionLocal()
+    existing = db.query(Student).filter_by(roll_number=roll_number).first()
+    if existing:
+        db.close()
+        return jsonify({"error": "Roll number already exists"}), 409
 
     student = Student(
         name=name,
@@ -49,5 +61,6 @@ def register_student():
 
     db.add(student)
     db.commit()
+    db.close()
 
-    return jsonify({"message": "Student registered successfully"})
+    return jsonify({"message": f"Student '{name}' registered successfully", "success": True})

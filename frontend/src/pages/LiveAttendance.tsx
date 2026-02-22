@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Play, Square, Clock } from 'lucide-react';
+import { Camera, Play, Square } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ScanFrame } from '../components/ui/ScanFrame';
-import { StatusIndicator } from '../components/ui/StatusIndicator';
 import type { AttendanceLog } from '../types';
 import Webcam from 'react-webcam';
+
+import { attendanceAPI } from '../services/api';
 
 export const LiveAttendance = () => {
   const webcamRef = useRef<Webcam>(null);
@@ -16,6 +17,43 @@ export const LiveAttendance = () => {
   const [idScanned, setIdScanned] = useState(false);
   const [logs, setLogs] = useState<AttendanceLog[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [stats, setStats] = useState({ verified: 0, failed: 0 });
+  const processedStudents = useRef<Set<string>>(new Set());
+
+  // Fetch recent attendance logs on mount
+  useEffect(() => {
+    const fetchRecentLogs = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/attendance/recent");
+        const data = await res.json();
+        if (data.success && data.records) {
+          const recentLogs = data.records.map((r: any) => ({
+            id: r.student_id + Math.random().toString(),
+            timestamp: r.time,
+            studentName: 'System',
+            rollNumber: '',
+            status: 'success' as const,
+            message: `Student verified (ID: ${r.student_id})`
+          }));
+          setLogs(recentLogs);
+        }
+      } catch (error) {
+        console.error("Failed to fetch recent logs", error);
+      }
+    };
+
+    const fetchStats = async () => {
+      try {
+        const data = await attendanceAPI.getTodayStats();
+        setStats({ verified: data.verified, failed: data.failed });
+      } catch (error) {
+        console.error("Failed to fetch today's stats", error);
+      }
+    };
+
+    fetchRecentLogs();
+    fetchStats();
+  }, []);
 
   const handleStartSession = async () => {
     setIsLoading(true);
@@ -24,8 +62,8 @@ export const LiveAttendance = () => {
       const result = await res.json();
       setSessionId(result.sessionId);
       setIsActive(true);
+      processedStudents.current.clear();
       addLog('Session started successfully', 'success');
-      simulateLiveDetection();
     } catch (error) {
       addLog('Failed to start session', 'failed');
     } finally {
@@ -77,13 +115,37 @@ export const LiveAttendance = () => {
             });
             const response = await res.json();
 
-            if (response.success && response.student) {
-              if (response.message === "Already marked") {
-                addLog(`${response.student} already marked today`, 'success');
-              } else {
-                addLog(`Student verified: ${response.student}`, 'success');
+            if (response.status) {
+              switch (response.status) {
+                case "marked":
+                  addLog(`✅ Scanning face recognized, attendance marked for ${response.student}`, 'success');
+                  setIdScanned(true);
+                  break;
+                case "already_marked":
+                  if (!processedStudents.current.has(response.student)) {
+                    addLog(`⚠️ Student ${response.student} already marked`, 'success');
+                    processedStudents.current.add(response.student);
+                  }
+                  setIdScanned(true);
+                  break;
+                case "not_found":
+                  // Add log only once or throttle failure for UX, but user asked to log it
+                  addLog(`❌ No records found failure`, 'failed');
+                  setIdScanned(false);
+                  break;
+                default:
+                  if (response.student) {
+                    addLog(`Student verified: ${response.student}`, 'success');
+                    setIdScanned(true);
+                  } else {
+                    setIdScanned(false);
+                  }
+                  break;
               }
-              setIdScanned(true);
+              // Immediately fetch stats so dashboard updates
+              attendanceAPI.getTodayStats().then(data => {
+                setStats({ verified: data.verified, failed: data.failed });
+              }).catch(e => console.error(e));
             } else {
               setIdScanned(false);
             }
@@ -282,12 +344,12 @@ export const LiveAttendance = () => {
 
                 <div className="flex justify-between text-sm">
                   <span className="text-[#9CA3AF]">Verified</span>
-                  <span className="text-[#E5E7EB] font-semibold">132</span>
+                  <span className="text-[#E5E7EB] font-semibold">{stats.verified}</span>
                 </div>
 
                 <div className="flex justify-between text-sm mt-1">
                   <span className="text-[#9CA3AF]">Failed</span>
-                  <span className="text-[#E5E7EB] font-semibold">3</span>
+                  <span className="text-[#E5E7EB] font-semibold">{stats.failed}</span>
                 </div>
               </div>
 

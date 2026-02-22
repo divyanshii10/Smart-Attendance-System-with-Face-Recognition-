@@ -1,11 +1,66 @@
 import uuid
 from datetime import datetime
 from database.db import SessionLocal
-from database.models import Attendance
+from database.models import Attendance, FailedScan
 
 # Simple in-memory session tracking
 _active_session_id = None
 _marked_students_in_session = set()
+
+def get_today_stats():
+    db = SessionLocal()
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    verified_count = db.query(Attendance).filter(
+        Attendance.date == today
+    ).count()
+
+    failed_count = db.query(FailedScan).filter(
+        FailedScan.date == today
+    ).count()
+
+    db.close()
+    
+    return {
+        "verified": verified_count,
+        "failed": failed_count
+    }
+
+def log_failed_scan():
+    db = SessionLocal()
+    now = datetime.now()
+    record = FailedScan(
+        date=now.strftime("%Y-%m-%d"),
+        time=now.strftime("%H:%M:%S")
+    )
+    db.add(record)
+    db.commit()
+    db.close()
+
+def get_recent_attendance():
+    db = SessionLocal()
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    records = (
+        db.query(Attendance)
+        .filter(Attendance.date == today)
+        .order_by(Attendance.time.desc())
+        .limit(10)
+        .all()
+    )
+
+    result = [
+        {
+            "student_id": r.student_id,
+            "date": r.date,
+            "time": r.time,
+            "confidence": r.confidence
+        }
+        for r in records
+    ]
+    
+    db.close()
+    return result
 
 def get_active_session():
     global _active_session_id

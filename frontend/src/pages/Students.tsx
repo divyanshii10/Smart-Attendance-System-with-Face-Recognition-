@@ -6,6 +6,7 @@ import { Table, Pagination } from '../components/ui/Table';
 import { studentsAPI, departmentsAPI } from '../services/api';
 import { getDepartmentColor } from '../utils/helpers';
 import type { Student, Department } from '../types';
+import { AddStudentModal } from '../components/students/AddStudentModal';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -17,6 +18,7 @@ export const Students = () => {
   const [selectedDept, setSelectedDept] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -116,10 +118,14 @@ export const Students = () => {
         <Button
           variant="primary"
           leftIcon={<UserPlus className="w-5 h-5" />}
+          onClick={() => setModalOpen(true)}
         >
           Add Student
         </Button>
       </div>
+
+      {/* Add Student Modal */}
+      <AddStudentModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
 
       <Card>
         <div className="flex flex-col md:flex-row gap-4 mb-6">

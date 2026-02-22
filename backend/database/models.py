@@ -22,3 +22,11 @@ class Attendance(Base):
     date = Column(String)
     time = Column(String)
     confidence = Column(Float)
+
+
+class FailedScan(Base):
+    __tablename__ = "failed_scans"
+
+    id = Column(Integer, primary_key=True, index=True)
+    date = Column(String)
+    time = Column(String)

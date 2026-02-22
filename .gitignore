@@ -11,3 +11,5 @@ build/
 # Database
 backend/attendance.db
 *.db
+backend/uploads/students/
+backend/uploads/frames/
