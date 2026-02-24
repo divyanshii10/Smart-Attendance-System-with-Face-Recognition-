@@ -8,9 +8,7 @@ services:
     startCommand: gunicorn app:app
     envVars:
       - key: FRONTEND_URL
-        value: https://smart-attendance-frontend.onrender.com  # update to match your frontend service name
-      - key: PYTHON_VERSION
-        value: "3.11"
+        value: https://smart-attendance-frontend.onrender.com
 
   # ── Frontend (React/Vite Static Site) ─────────────────────────────────────
   - type: web
