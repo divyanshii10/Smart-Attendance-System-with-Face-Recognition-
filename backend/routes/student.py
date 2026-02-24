@@ -12,6 +12,23 @@ UPLOAD_FOLDER = "uploads/students"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
+@student_bp.route("/", methods=["GET"])
+def get_students():
+    db = SessionLocal()
+    students = db.query(Student).all()
+    db.close()
+    return jsonify([
+        {
+            "id": s.id,
+            "name": s.name,
+            "roll_number": s.roll_number,
+            "department": s.department,
+            "year": s.year or "",
+            "email": s.email or ""
+        }
+        for s in students
+    ])
+
 @student_bp.route("/register", methods=["POST"])
 def register_student():
 
@@ -55,6 +72,8 @@ def register_student():
         name=name,
         roll_number=roll_number,
         department=department,
+        year=year,
+        email=email,
         photo_path=file_path,
         face_encoding=str(encoding)
     )

@@ -9,6 +9,8 @@ class Student(Base):
     name = Column(String, nullable=False)
     roll_number = Column(String, unique=True, nullable=False)
     department = Column(String, nullable=False)
+    year = Column(String, nullable=True)
+    email = Column(String, nullable=True)
 
     photo_path = Column(String)
     face_encoding = Column(String)

@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from database.db import engine
 from database.db import Base
 from database import models
 from routes.student import student_bp
 from routes.attendance import attendance_bp
+import os
 
 # Create Flask server instance
 app = Flask(__name__)
@@ -18,6 +19,11 @@ Base.metadata.create_all(bind=engine)
 # Register student routes
 app.register_blueprint(student_bp, url_prefix="/students")
 app.register_blueprint(attendance_bp, url_prefix="/attendance")
+
+# Serve uploaded student photos
+@app.route("/uploads/<path:filename>")
+def serve_upload(filename):
+    return send_from_directory(os.path.join(os.getcwd(), "uploads"), filename)
 
 # Test route
 @app.route("/")

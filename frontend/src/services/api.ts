@@ -88,8 +88,18 @@ export const dashboardAPI = {
 
 export const studentsAPI = {
   getAll: async (): Promise<Student[]> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return mockStudents;
+    const res = await fetch("http://127.0.0.1:8000/students/");
+    const data = await res.json();
+    return data.map((s: any) => ({
+      id: String(s.id),
+      rollNumber: s.roll_number,
+      name: s.name,
+      email: s.email || "",
+      department: s.department,
+      year: Number(s.year) || 0,
+      phoneNumber: "",
+      enrollmentDate: "",
+    }));
   },
 
   getById: async (id: string): Promise<Student> => {

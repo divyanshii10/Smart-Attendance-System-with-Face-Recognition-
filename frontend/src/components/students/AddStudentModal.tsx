@@ -6,6 +6,7 @@ import { Button } from '../ui/Button';
 interface AddStudentModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSuccess?: () => void;
 }
 
 const DEPARTMENTS = [
@@ -27,7 +28,7 @@ const defaultForm = {
     image: null as File | null,
 };
 
-export const AddStudentModal = ({ isOpen, onClose }: AddStudentModalProps) => {
+export const AddStudentModal = ({ isOpen, onClose, onSuccess }: AddStudentModalProps) => {
     const [formData, setFormData] = useState(defaultForm);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -82,6 +83,7 @@ export const AddStudentModal = ({ isOpen, onClose }: AddStudentModalProps) => {
 
             if (res.ok) {
                 setSubmitStatus('success');
+                onSuccess?.();
                 setTimeout(() => {
                     setFormData(defaultForm);
                     setImagePreview(null);

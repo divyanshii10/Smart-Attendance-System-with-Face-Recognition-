@@ -7,6 +7,7 @@ import { studentsAPI, departmentsAPI } from '../services/api';
 import { getDepartmentColor } from '../utils/helpers';
 import type { Student, Department } from '../types';
 import { AddStudentModal } from '../components/students/AddStudentModal';
+import { ViewStudentModal } from '../components/students/ViewStudentModal';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -19,6 +20,7 @@ export const Students = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [viewStudent, setViewStudent] = useState<Student | null>(null);
 
   useEffect(() => {
     loadData();
@@ -82,17 +84,33 @@ export const Students = () => {
         </span>
       )
     },
-    { header: 'Year', accessor: 'year' },
-    { header: 'Email', accessor: 'email' },
+    {
+      header: 'Year',
+      accessor: 'year',
+      render: (value: number) => (
+        <span className={value ? 'text-[#E5E7EB]' : 'text-[#4B5563]'}>
+          {value ? `Year ${value}` : '—'}
+        </span>
+      )
+    },
+    {
+      header: 'Email',
+      accessor: 'email',
+      render: (value: string) => (
+        <span className={value ? 'text-[#E5E7EB]' : 'text-[#4B5563]'}>
+          {value || '—'}
+        </span>
+      )
+    },
     {
       header: 'Actions',
       accessor: 'id',
-      render: (value: string, row: Student) => (
+      render: (_value: string, row: Student) => (
         <Button
           size="sm"
           variant="outline"
           leftIcon={<Eye className="w-4 h-4" />}
-          onClick={() => console.log('View student:', row)}
+          onClick={() => setViewStudent(row)}
         >
           View
         </Button>
@@ -125,7 +143,10 @@ export const Students = () => {
       </div>
 
       {/* Add Student Modal */}
-      <AddStudentModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <AddStudentModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onSuccess={loadData} />
+
+      {/* View Student Modal */}
+      <ViewStudentModal student={viewStudent} onClose={() => setViewStudent(null)} />
 
       <Card>
         <div className="flex flex-col md:flex-row gap-4 mb-6">
