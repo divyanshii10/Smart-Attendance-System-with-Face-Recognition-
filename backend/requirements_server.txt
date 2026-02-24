@@ -1,0 +1,7 @@
+# App dependencies only — dlib & face_recognition come from the Docker base image
+flask
+flask-cors
+sqlalchemy
+pillow
+opencv-python-headless
+gunicorn
