@@ -3,5 +3,6 @@ flask-cors
 sqlalchemy
 pillow
 opencv-python-headless
+dlib-binary
 face-recognition
 gunicorn
