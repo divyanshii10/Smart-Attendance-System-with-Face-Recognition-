@@ -10,8 +10,9 @@ import os
 # Create Flask server instance
 app = Flask(__name__)
 
-# Enable CORS so frontend can call backend
-CORS(app)
+# Enable CORS — allow any origin in dev, or restrict to FRONTEND_URL in prod
+frontend_url = os.environ.get("FRONTEND_URL", "*")
+CORS(app, origins=frontend_url)
 
 # Create tables in DB
 Base.metadata.create_all(bind=engine)
@@ -33,12 +34,6 @@ def home():
 
 # Server start point
 if __name__ == "__main__":
-    print("Starting Flask server...")
-    app.run(debug=True, port=8000)
-
-
-
-
-
-
-
+    port = int(os.environ.get("PORT", 8000))
+    print(f"Starting Flask server on port {port}...")
+    app.run(host="0.0.0.0", debug=False, port=port)

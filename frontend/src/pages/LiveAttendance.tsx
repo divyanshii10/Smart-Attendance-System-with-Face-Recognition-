@@ -9,6 +9,8 @@ import Webcam from 'react-webcam';
 
 import { attendanceAPI } from '../services/api';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 export const LiveAttendance = () => {
   const webcamRef = useRef<Webcam>(null);
   const [isActive, setIsActive] = useState(false);
@@ -24,7 +26,7 @@ export const LiveAttendance = () => {
   useEffect(() => {
     const fetchRecentLogs = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/attendance/recent");
+        const res = await fetch(`${API_URL}/attendance/recent`);
         const data = await res.json();
         if (data.success && data.records) {
           const recentLogs = data.records.map((r: any) => ({
@@ -58,7 +60,7 @@ export const LiveAttendance = () => {
   const handleStartSession = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/attendance/start", { method: "POST" });
+      const res = await fetch(`${API_URL}/attendance/start`, { method: "POST" });
       const result = await res.json();
       setSessionId(result.sessionId);
       setIsActive(true);
@@ -75,7 +77,7 @@ export const LiveAttendance = () => {
     if (sessionId) {
       setIsLoading(true);
       try {
-        await fetch("http://127.0.0.1:8000/attendance/stop", {
+        await fetch(`${API_URL}/attendance/stop`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ sessionId })
@@ -104,7 +106,7 @@ export const LiveAttendance = () => {
         if (imageSrc) {
           try {
             setFaceDetected(true);
-            const res = await fetch("http://127.0.0.1:8000/attendance/verify", {
+            const res = await fetch(`${API_URL}/attendance/verify`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

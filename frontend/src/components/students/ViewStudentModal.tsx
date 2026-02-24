@@ -2,6 +2,8 @@ import { X, User, Mail, Hash, BookOpen, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Student } from '../../types';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 interface ViewStudentModalProps {
     student: Student | null;
     onClose: () => void;
@@ -22,7 +24,7 @@ const InfoRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
 export const ViewStudentModal = ({ student, onClose }: ViewStudentModalProps) => {
     // Build photo URL from roll number
     const photoUrl = student
-        ? `http://127.0.0.1:8000/uploads/students/${student.rollNumber}.jpg`
+        ? `${API_URL}/uploads/students/${student.rollNumber}.jpg`
         : null;
 
     return (

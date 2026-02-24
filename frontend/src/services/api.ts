@@ -9,7 +9,7 @@ import type {
   Settings
 } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -153,13 +153,13 @@ export const attendanceAPI = {
     };
   },
 
-  getRecords: async (startDate: string, endDate: string): Promise<AttendanceRecord[]> => {
+  getRecords: async (_startDate: string, _endDate: string): Promise<AttendanceRecord[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     return mockAttendanceRecords;
   },
 
   getTodayStats: async () => {
-    const res = await fetch("http://127.0.0.1:8000/attendance/today-stats");
+    const res = await fetch(`${API_BASE_URL}/attendance/today-stats`);
     return res.json();
   }
 };

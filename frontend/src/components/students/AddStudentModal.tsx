@@ -3,6 +3,8 @@ import { X, Upload, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../ui/Button';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 interface AddStudentModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -73,7 +75,7 @@ export const AddStudentModal = ({ isOpen, onClose, onSuccess }: AddStudentModalP
                 payload.append('image', formData.image);
             }
 
-            const res = await fetch('http://127.0.0.1:8000/students/register', {
+            const res = await fetch(`${API_URL}/students/register`, {
                 method: 'POST',
                 body: payload,
             });

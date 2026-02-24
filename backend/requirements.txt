@@ -1,1 +1,7 @@
-pip install flask flask-cors sqlalchemy pillow opencv-python face-recognition
+flask
+flask-cors
+sqlalchemy
+pillow
+opencv-python-headless
+face-recognition
+gunicorn
