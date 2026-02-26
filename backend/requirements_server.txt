@@ -2,6 +2,8 @@
 flask
 flask-cors
 sqlalchemy
+psycopg2-binary
 pillow
 opencv-python-headless
 gunicorn
+openpyxl

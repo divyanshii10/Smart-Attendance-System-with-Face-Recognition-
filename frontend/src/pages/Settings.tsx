@@ -236,7 +236,8 @@ export const Settings = () => {
           {/* Buttons */}
           <div className="flex flex-wrap gap-3">
 
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => settingsAPI.backupDatabase()}>
+              <Database className="w-5 h-5 mr-2" />
               Backup Database
             </Button>
 

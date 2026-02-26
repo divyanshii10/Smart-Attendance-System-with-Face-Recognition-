@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Camera, Lock, Mail } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
@@ -151,7 +151,6 @@ export const Login = () => {
               </span>
             </div>
 
-            {/* Button */}
             <Button
               type="submit"
               size="lg"
@@ -160,14 +159,16 @@ export const Login = () => {
             >
               Sign In
             </Button>
+
+            <p className="text-center text-sm text-[#9CA3AF] mt-4 pb-2">
+              Don't have an account?{' '}
+              <Link to="/signup" className="text-[#4F46E5] hover:text-[#4338CA] transition font-medium">
+                Sign up
+              </Link>
+            </p>
+
           </form>
 
-          {/* Demo creds */}
-          <div className="mt-6 pt-6 border-t border-white/[0.06]">
-            <p className="text-xs text-center text-[#6B7280]">
-              Demo: admin@college.edu / admin123
-            </p>
-          </div>
         </div>
 
         {/* Footer */}

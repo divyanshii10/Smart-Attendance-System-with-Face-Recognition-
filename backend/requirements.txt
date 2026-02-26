@@ -1,8 +1,10 @@
 flask
 flask-cors
 sqlalchemy
+psycopg2-binary
 pillow
 opencv-python-headless
 dlib-binary
 face-recognition
 gunicorn
+openpyxl

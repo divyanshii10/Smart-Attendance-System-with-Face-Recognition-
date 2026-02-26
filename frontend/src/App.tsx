@@ -5,6 +5,7 @@ import { Layout } from "./components/layout/Layout";
 
 import Landing from "./pages/Landing";
 import { Login } from "./pages/Login";
+import { Signup } from "./pages/Signup";
 import { Dashboard } from "./pages/Dashboard";
 import { LiveAttendance } from "./pages/LiveAttendance";
 import { Students } from "./pages/Students";
@@ -20,11 +21,17 @@ function AppRoutes() {
       {/* 🟢 LANDING PAGE (Public) */}
       <Route path="/" element={<Landing />} />
 
-      {/* 🟢 LOGIN (Public) */}
+      {/* 🟢 LOGIN / SIGNUP (Public) */}
       <Route
         path="/login"
         element={
           isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          isAuthenticated ? <Navigate to="/dashboard" replace /> : <Signup />
         }
       />
 

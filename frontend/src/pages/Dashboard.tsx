@@ -10,6 +10,8 @@ import type { DashboardStats, AttendanceData } from '../types';
 export const Dashboard = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [weeklyData, setWeeklyData] = useState<AttendanceData[]>([]);
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [deptStats, setDeptStats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,12 +20,17 @@ export const Dashboard = () => {
 
   const loadDashboardData = async () => {
     try {
-      const [statsData, chartData] = await Promise.all([
+      const [statsData, chartData, recentData, deptData] = await Promise.all([
         dashboardAPI.getStats(),
-        dashboardAPI.getWeeklyData()
+        dashboardAPI.getWeeklyData(),
+        dashboardAPI.getRecentActivity(),
+        dashboardAPI.getDepartmentStats()
       ]);
+      console.log("Loaded dashboard data:", { statsData, chartData, recentData, deptData });
       setStats(statsData);
       setWeeklyData(chartData);
+      setRecentActivity(recentData);
+      setDeptStats(deptData);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {
@@ -74,7 +81,6 @@ export const Dashboard = () => {
           value={stats?.todayPresent || 0}
           icon={<UserCheck className="w-6 h-6 text-[#10B981]" />}
           color="green"
-          trend={{ value: 5, isPositive: true }}
         />
         <StatCard
           title="Absent Today"
@@ -87,7 +93,6 @@ export const Dashboard = () => {
           value={`${stats?.attendancePercentage || 0}%`}
           icon={<TrendingUp className="w-6 h-6 text-[#4F46E5]" />}
           color="blue"
-          trend={{ value: 3, isPositive: true }}
         />
       </div>
 
@@ -105,7 +110,7 @@ export const Dashboard = () => {
                   Average Attendance
                 </span>
                 <span className="text-xl font-bold text-[#E5E7EB]">
-                  87%
+                  {stats?.attendancePercentage || 0}%
                 </span>
               </div>
             </div>
@@ -116,7 +121,7 @@ export const Dashboard = () => {
                   Perfect Attendance
                 </span>
                 <span className="text-xl font-bold text-[#E5E7EB]">
-                  45
+                  —
                 </span>
               </div>
             </div>
@@ -129,12 +134,7 @@ export const Dashboard = () => {
         <Card title="Recent Activity">
           <div className="space-y-4">
 
-            {[
-              { name: 'Rahul Sharma', action: 'marked present', time: '2 mins ago' },
-              { name: 'Priya Patel', action: 'marked present', time: '5 mins ago' },
-              { name: 'Amit Kumar', action: 'marked present', time: '8 mins ago' },
-              { name: 'Sneha Reddy', action: 'marked present', time: '12 mins ago' },
-            ].map((activity, index) => (
+            {recentActivity.length > 0 ? recentActivity.map((activity, index) => (
 
               <div
                 key={index}
@@ -158,7 +158,7 @@ export const Dashboard = () => {
             font-semibold
             text-sm
           ">
-                    {activity.name.split(' ').map(n => n[0]).join('')}
+                    {activity.name.split(' ').map((n: string) => n[0]).join('')}
                   </div>
 
                   {/* Text */}
@@ -181,21 +181,18 @@ export const Dashboard = () => {
 
               </div>
 
-            ))}
+            )) : (
+              <p className="text-[#6B7280] text-sm text-center py-4">No recent activity today.</p>
+            )}
 
           </div>
         </Card>
 
-        <Card title="Department Attendance">
+        <Card title="Department Attendance (Today)">
 
           <div className="space-y-6">
 
-            {[
-              { name: 'Computer Science', percentage: 92 },
-              { name: 'Electronics', percentage: 88 },
-              { name: 'Mechanical', percentage: 85 },
-              { name: 'Civil', percentage: 79 },
-            ].map((dept, index) => (
+            {deptStats.length > 0 ? deptStats.map((dept, index) => (
 
               <div key={index}>
 
@@ -231,7 +228,9 @@ export const Dashboard = () => {
 
               </div>
 
-            ))}
+            )) : (
+              <p className="text-[#6B7280] text-sm text-center py-4">No department data available.</p>
+            )}
 
           </div>
 

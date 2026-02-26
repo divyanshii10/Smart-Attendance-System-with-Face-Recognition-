@@ -28,29 +28,51 @@ api.interceptors.request.use((config) => {
 
 export const authAPI = {
   login: async (email: string, password: string): Promise<User> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      const { user, token } = response.data;
 
-    if (email === 'admin@college.edu' && password === 'admin123') {
-      const user: User = {
-        id: '1',
-        email: 'admin@college.edu',
-        name: 'Admin User',
-        role: 'admin'
-      };
-      localStorage.setItem('authToken', 'mock-token-123');
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('authUser', JSON.stringify(user));
       return user;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        throw new Error(error.response.data.message || 'Login failed');
+      }
+      throw new Error('Network error during login');
     }
-    throw new Error('Invalid credentials');
+  },
+
+  signup: async (name: string, email: string, password: string): Promise<User> => {
+    try {
+      const response = await api.post('/auth/signup', { name, email, password });
+      const { user, token } = response.data;
+
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('authUser', JSON.stringify(user));
+      return user;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        throw new Error(error.response.data.message || 'Signup failed');
+      }
+      throw new Error('Network error during signup');
+    }
   },
 
   logout: async (): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 300));
     localStorage.removeItem('authToken');
+    localStorage.removeItem('authUser');
   },
 
   getCurrentUser: async (): Promise<User | null> => {
     const token = localStorage.getItem('authToken');
     if (!token) return null;
+
+    const storedUser = localStorage.getItem('authUser');
+    if (storedUser) {
+      return JSON.parse(storedUser);
+    }
 
     return {
       id: '1',
@@ -63,32 +85,49 @@ export const authAPI = {
 
 export const dashboardAPI = {
   getStats: async (): Promise<DashboardStats> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return {
-      totalStudents: 150,
-      todayPresent: 132,
-      todayAbsent: 18,
-      attendancePercentage: 88
-    };
+    try {
+      const res = await api.get('/dashboard/stats');
+      return res.data;
+    } catch (e: any) {
+      console.error("Axios getStats error:", e.response?.data || e.message);
+      throw new Error('Failed to fetch stats');
+    }
   },
 
   getWeeklyData: async (): Promise<AttendanceData[]> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return [
-      { date: 'Mon', present: 128, absent: 22, percentage: 85 },
-      { date: 'Tue', present: 135, absent: 15, percentage: 90 },
-      { date: 'Wed', present: 130, absent: 20, percentage: 87 },
-      { date: 'Thu', present: 132, absent: 18, percentage: 88 },
-      { date: 'Fri', present: 140, absent: 10, percentage: 93 },
-      { date: 'Sat', present: 125, absent: 25, percentage: 83 },
-      { date: 'Sun', present: 120, absent: 30, percentage: 80 },
-    ];
+    try {
+      const res = await api.get('/dashboard/weekly');
+      return res.data;
+    } catch (e: any) {
+      console.error("Axios getWeeklyData error:", e.response?.data || e.message);
+      throw new Error('Failed to fetch weekly data');
+    }
+  },
+
+  getRecentActivity: async () => {
+    try {
+      const res = await api.get('/dashboard/recent');
+      return res.data;
+    } catch (e: any) {
+      console.error("Axios getRecentActivity error:", e.response?.data || e.message);
+      throw new Error('Failed to fetch recent activity');
+    }
+  },
+
+  getDepartmentStats: async () => {
+    try {
+      const res = await api.get('/dashboard/departments');
+      return res.data;
+    } catch (e: any) {
+      console.error("Axios getDepartmentStats error:", e.response?.data || e.message);
+      throw new Error('Failed to fetch department stats');
+    }
   }
 };
 
 export const studentsAPI = {
   getAll: async (): Promise<Student[]> => {
-    const res = await fetch("http://127.0.0.1:8000/students/");
+    const res = await fetch(`${API_BASE_URL}/students/`);
     const data = await res.json();
     return data.map((s: any) => ({
       id: String(s.id),
@@ -119,6 +158,14 @@ export const studentsAPI = {
     const existing = mockStudents.find(s => s.id === id);
     if (!existing) throw new Error('Student not found');
     return { ...existing, ...student };
+  },
+
+  delete: async (id: string): Promise<void> => {
+    const res = await fetch(`${API_BASE_URL}/students/${id}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to delete student');
+    }
   }
 };
 
@@ -164,26 +211,85 @@ export const attendanceAPI = {
   }
 };
 
+export const reportsAPI = {
+  getSessions: async () => {
+    const res = await fetch(`${API_BASE_URL}/reports/sessions`);
+    if (!res.ok) throw new Error('Failed to fetch sessions');
+    return res.json();
+  },
+
+  getSessionDetail: async (sessionId: number) => {
+    const res = await fetch(`${API_BASE_URL}/reports/session/${sessionId}`);
+    if (!res.ok) throw new Error('Failed to fetch session detail');
+    return res.json();
+  },
+
+  exportSession: (sessionId: number) => {
+    // Triggers a browser file download directly
+    window.open(`${API_BASE_URL}/reports/export/${sessionId}`, '_blank');
+  }
+};
+
 export const settingsAPI = {
   get: async (): Promise<Settings> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return {
-      cameraId: 'default',
-      confidenceThreshold: 85,
-      autoExport: false,
-      notificationsEnabled: true
-    };
+    try {
+      const res = await api.get('/settings');
+      // Map API response to frontend type
+      return {
+        cameraId: 'default',
+        confidenceThreshold: res.data.confidenceThreshold ? res.data.confidenceThreshold * 100 : 85,
+        autoExport: res.data.autoExport || false,
+        notificationsEnabled: true
+      };
+    } catch (e) {
+      console.error("Failed to load settings from API", e);
+      return {
+        cameraId: 'default',
+        confidenceThreshold: 85,
+        autoExport: false,
+        notificationsEnabled: true
+      };
+    }
   },
 
   update: async (settings: Partial<Settings>): Promise<Settings> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return {
-      cameraId: 'default',
-      confidenceThreshold: 85,
-      autoExport: false,
-      notificationsEnabled: true,
-      ...settings
+    const payload = {
+      ...(settings.confidenceThreshold && { confidenceThreshold: settings.confidenceThreshold / 100 }),
+      ...(settings.autoExport !== undefined && { autoExport: settings.autoExport })
     };
+    const res = await api.post('/settings', payload);
+    return {
+      ...settings,
+      confidenceThreshold: res.data.confidenceThreshold ? res.data.confidenceThreshold * 100 : 85,
+      autoExport: res.data.autoExport
+    } as Settings;
+  },
+
+  backupDatabase: () => {
+    window.open(`${API_BASE_URL}/settings/backup`, '_blank');
+  }
+};
+
+export interface AppNotification {
+  id: number;
+  message: string;
+  type: 'info' | 'success' | 'warning';
+  created_at: string;
+  is_read: boolean;
+}
+
+export const notificationsAPI = {
+  get: async (): Promise<{ notifications: AppNotification[], unread_count: number }> => {
+    const res = await api.get('/notifications');
+    return res.data;
+  },
+  markRead: async (id: number) => {
+    const res = await api.post(`/notifications/${id}/read`);
+    return res.data;
+  },
+  markAllRead: async () => {
+    const res = await api.post('/notifications/read-all');
+    return res.data;
   }
 };
 

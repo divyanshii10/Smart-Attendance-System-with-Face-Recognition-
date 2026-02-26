@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Search, Filter, UserPlus, Eye } from 'lucide-react';
+import { Search, Filter, UserPlus, Eye, Trash2 } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Table, Pagination } from '../components/ui/Table';
@@ -66,6 +66,18 @@ export const Students = () => {
     setCurrentPage(1);
   };
 
+  const handleDelete = async (student: Student) => {
+    if (window.confirm(`Are you sure you want to delete ${student.name} (${student.rollNumber})? This cannot be undone.`)) {
+      try {
+        await studentsAPI.delete(student.id);
+        loadData();
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        alert('Failed to delete student. ' + (error instanceof Error ? error.message : ''));
+      }
+    }
+  };
+
   const totalPages = Math.ceil(filteredStudents.length / ITEMS_PER_PAGE);
   const paginatedStudents = filteredStudents.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -106,14 +118,25 @@ export const Students = () => {
       header: 'Actions',
       accessor: 'id',
       render: (_value: string, row: Student) => (
-        <Button
-          size="sm"
-          variant="outline"
-          leftIcon={<Eye className="w-4 h-4" />}
-          onClick={() => setViewStudent(row)}
-        >
-          View
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            leftIcon={<Eye className="w-4 h-4" />}
+            onClick={() => setViewStudent(row)}
+          >
+            View
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="!text-red-500 hover:!bg-red-500/10 !border-red-500/20"
+            leftIcon={<Trash2 className="w-4 h-4" />}
+            onClick={() => handleDelete(row)}
+          >
+            Delete
+          </Button>
+        </div>
       )
     }
   ];

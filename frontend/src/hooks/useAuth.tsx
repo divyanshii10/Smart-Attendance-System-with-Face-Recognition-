@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -40,6 +41,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const signup = async (name: string, email: string, password: string) => {
+    try {
+      const user = await authAPI.signup(name, email, password);
+      setUser(user);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await authAPI.logout();
@@ -55,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         user,
         loading,
         login,
+        signup,
         logout,
         isAuthenticated: !!user,
       }}
