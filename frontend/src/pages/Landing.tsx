@@ -1,9 +1,18 @@
-
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Landing() {
   const navigate = useNavigate();
+  const [typewriterKey, setTypewriterKey] = useState(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTypewriterKey((prev) => prev + 1);
+    }, 6000); // 6 seconds loop
+    return () => clearInterval(interval);
+  }, []);
 
   /* ================= ANIMATIONS ================= */
 
@@ -38,23 +47,31 @@ export default function Landing() {
         <div className="absolute inset-0 bg-[#0B1120]/90" />
 
         {/* NAVBAR */}
-        <nav className="relative flex items-center justify-between px-10 py-6 border-b border-white/[0.06]">
+        <nav className="relative z-50 flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/[0.04] bg-[#0B1120]/40 backdrop-blur-md">
 
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4F46E5] to-[#06B6D4] bg-clip-text text-transparent">
-            SmartAttendance
-          </h1>
-
-          <div className="hidden md:flex gap-8 text-[#9CA3AF]">
-            <a href="#features" className="hover:text-[#E5E7EB] transition">Features</a>
-            <a href="#how" className="hover:text-[#E5E7EB] transition">How it Works</a>
-            <a href="#faq" className="hover:text-[#E5E7EB] transition">FAQs</a>
+          {/* Brand */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#4F46E5]/20">
+              <span className="text-white text-lg">📸</span>
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-white">
+              Attend<span className="text-[#06B6D4]">Ease</span>
+            </h1>
           </div>
 
+          {/* Links */}
+          <div className="hidden md:flex items-center gap-10">
+            <a href="#features" className="text-base font-medium text-[#9CA3AF] hover:text-white transition-colors">Features</a>
+            <a href="#how" className="text-base font-medium text-[#9CA3AF] hover:text-white transition-colors">How it Works</a>
+            <a href="#faq" className="text-base font-medium text-[#9CA3AF] hover:text-white transition-colors">FAQs</a>
+          </div>
+
+          {/* CTA */}
           <button
             onClick={() => navigate("/login")}
-            className="px-5 py-2 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium transition"
+            className="px-6 py-2.5 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium transition"
           >
-            Login
+            Sign In
           </button>
 
         </nav>
@@ -155,7 +172,7 @@ export default function Landing() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-[#4F46E5] to-[#06B6D4] bg-clip-text text-transparent"
+            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-white to-[#E5E7EB] bg-clip-text text-transparent"
           >
             Powerful Features
           </motion.h2>
@@ -280,118 +297,275 @@ export default function Landing() {
       </section>
 
       {/* ================= HOW ================= */}
-      <section id="how" className="px-10 md:px-20 py-24">
+      <section id="how" className="px-10 md:px-20 py-24 relative">
+        <div className="max-w-6xl mx-auto">
 
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          className="text-4xl font-bold text-center mb-16 gradient-text"
-        >
-          How It Works
-        </motion.h2>
+          {/* Animated Typewriter Heading */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.05 } },
+              hidden: {}
+            }}
+            className="flex justify-center mb-4"
+          >
+            {Array.from("Here's How It Works").map((char, index) => (
+              <motion.span
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, display: "none" },
+                  visible: { opacity: 1, display: "inline-block" }
+                }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-[#E5E7EB] bg-clip-text text-transparent"
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+            <motion.span
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ repeat: Infinity, duration: 0.8 }}
+              className="text-4xl md:text-5xl font-bold text-[#4F46E5] ml-1"
+            >
+              |
+            </motion.span>
+          </motion.div>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          className="grid md:grid-cols-3 gap-12 text-center"
-        >
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="text-center text-[#9CA3AF] text-lg max-w-2xl mx-auto mb-20"
+          >
+            A frictionless, automated pipeline. From the moment a face is scanned to the final exported compliance report, AttendEase handles the heavy lifting.
+          </motion.p>
 
-          {[
-            "Capture Face",
-            "Match With Database",
-            "Mark Attendance"
-          ].map((step, i) => (
+          {/* Staggered Interactive Cards */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Capture Face",
+                desc: "Students stand in front of the camera. The system detects their face instantly in real-time.",
+                step: "01"
+              },
+              {
+                title: "Match & Verify",
+                desc: "High-speed AI compares the 128-point facial encoding against the secure PostgreSQL database.",
+                step: "02"
+              },
+              {
+                title: "Log Attendance",
+                desc: "The session is updated, dashboard metrics refresh, and the presence is timestamped automatically.",
+                step: "03"
+              }
+            ].map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.21, 0.47, 0.32, 0.98], // Custom premium easing curve
+                  delay: i * 0.2 // Sequential staggering (0s, 0.2s, 0.4s)
+                }}
+                whileHover={{
+                  scale: 1.02,
+                  y: -5,
+                  transition: { duration: 0.3 }
+                }}
+                className="
+                  relative p-8 rounded-2xl
+                  bg-[#111827] 
+                  border border-white/[0.05] 
+                  hover:border-[#4F46E5]/20
+                  shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
+                  transition-colors duration-300
+                  flex flex-col
+                "
+              >
+                {/* Step Number Badge */}
+                <div className="text-sm font-bold text-[#4F46E5] mb-6 tracking-wider">
+                  STEP {step.step}
+                </div>
 
-            <motion.div key={i} variants={fadeUp}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#4F46E5] flex items-center justify-center text-xl font-bold text-white">
-                {i + 1}
-              </div>
-              <h3 className="text-[#E5E7EB] font-medium">{step}</h3>
-            </motion.div>
+                <motion.h3
+                  key={typewriterKey} // Forces re-animation on interval
+                  className="text-2xl font-semibold text-white mb-3 flex flex-wrap h-16 md:h-8" // Fixed height prevents layout shift during typing
+                  variants={{
+                    visible: { transition: { staggerChildren: 0.08 } },
+                    hidden: {}
+                  }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-50px" }}
+                >
+                  {Array.from(step.title).map((char, charIndex) => (
+                    <motion.span
+                      key={charIndex}
+                      variants={{
+                        hidden: { opacity: 0, display: "none" },
+                        visible: { opacity: 1, display: "inline-block" }
+                      }}
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                  ))}
+                  <motion.span
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.8 }}
+                    className="text-[#4F46E5] ml-1 font-light"
+                  >
+                    |
+                  </motion.span>
+                </motion.h3>
 
-          ))}
+                <p className="text-[#9CA3AF] leading-relaxed">
+                  {step.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
 
-        </motion.div>
+        </div>
       </section>
 
       {/* ================= FAQ ================= */}
-      <section id="faq" className="px-10 md:px-20 py-24">
+      <section id="faq" className="px-10 md:px-20 py-24 relative">
+        <div className="max-w-3xl mx-auto">
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-white to-[#E5E7EB] bg-clip-text text-transparent"
+          >
+            Frequently Asked Questions
+          </motion.h2>
 
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          className="text-4xl font-bold text-center mb-16 gradient-text"
-        >
-          FAQs
-        </motion.h2>
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="space-y-4"
+          >
+            {[
+              {
+                q: "Is the biometric face data stored securely?",
+                a: "Absolutely. We do not store raw images in a way that can be reverse-engineered. All 128-point biometric encodings are encrypted and stored within our secure, isolated PostgreSQL database."
+              },
+              {
+                q: "Can the scanner recognize faces in low light environments?",
+                a: "Yes. Our computer vision models are trained dynamically to normalize exposure, allowing for high-accuracy recognition even in dimly lit classrooms or hallways."
+              },
+              {
+                q: "How does the enterprise multi-tenant system work?",
+                a: "Each admin account creates an entirely isolated data silo. When you upload a student, their biometric data and attendance records are strictly locked to your specific admin ID. No data is ever crossed between organizations."
+              },
+              {
+                q: "Can I export the attendance data?",
+                a: "Yes. The analytics dashboard provides real-time insights, while the Reports tab allows you to generate and export comprehensive daily or monthly Excel (.csv) sheets with a single click."
+              }
+            ].map((faq, i) => (
+              <motion.div
+                key={i}
+                variants={fadeUp}
+                className="overflow-hidden border-b border-white/[0.05] last:border-0"
+              >
+                <button
+                  onClick={() => setOpenFaqIndex(openFaqIndex === i ? null : i)}
+                  className="w-full flex items-center justify-between py-6 text-left focus:outline-none group"
+                >
+                  <span className="text-lg font-medium text-[#E5E7EB] group-hover:text-white transition-colors">
+                    {faq.q}
+                  </span>
+                  <motion.span
+                    animate={{ rotate: openFaqIndex === i ? 180 : 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="ml-4 text-[#4F46E5] text-xl font-light"
+                  >
+                    ↓
+                  </motion.span>
+                </button>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          className="max-w-3xl mx-auto space-y-6"
-        >
-
-          {[
-            {
-              q: "Is face data stored securely?",
-              a: "Yes. All biometric data is encrypted and stored securely following industry security standards."
-            },
-            {
-              q: "Can it work in low light?",
-              a: "Yes. The system uses AI-enhanced detection models optimized for low-light environments."
-            },
-            {
-              q: "Does it support real-time reports?",
-              a: "Absolutely. Attendance analytics and reports are generated instantly in real time."
-            }
-          ].map((faq, i) => (
-
-            <motion.div
-              key={i}
-              variants={fadeUp}
-              whileHover={{ scale: 1.02 }}
-              className="
-          p-6 rounded-xl
-          bg-[#111827]
-          border border-white/[0.06]
-          hover:border-[#4F46E5]/30
-          transition
-        "
-            >
-
-              {/* Question */}
-              <h3 className="text-lg font-semibold text-[#4F46E5] mb-2">
-                {faq.q}
-              </h3>
-
-              {/* Answer */}
-              <p className="text-[#9CA3AF] text-sm leading-relaxed">
-                {faq.a}
-              </p>
-
-            </motion.div>
-
-          ))}
-
-        </motion.div>
+                <AnimatePresence>
+                  {openFaqIndex === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+                    >
+                      <p className="pb-6 text-[#9CA3AF] leading-relaxed pr-8">
+                        {faq.a}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="relative text-center py-10 border-t border-white/[0.06] text-[#6B7280]">
+      <footer className="relative border-t border-white/[0.04] bg-[#0B1120] pt-20 pb-10 px-6 md:px-12">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#4F46E5]/50 to-transparent opacity-50" />
 
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#4F46E5] to-transparent" />
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-        >
-          © 2026 SmartAttendance • AI Powered System
-        </motion.p>
+          {/* Brand Column */}
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#4F46E5] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#4F46E5]/20">
+                <span className="text-white text-sm">📸</span>
+              </div>
+              <h2 className="text-xl font-bold tracking-tight text-white">
+                Attend<span className="text-[#06B6D4]">Ease</span>
+              </h2>
+            </div>
+            <p className="text-[#9CA3AF] text-sm leading-relaxed max-w-sm">
+              The next-generation biometric attendance platform. Automating compliance and security for modern enterprises with edge-AI facial recognition.
+            </p>
+          </div>
 
+          {/* Links Column 1 */}
+          <div>
+            <h3 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Platform</h3>
+            <ul className="space-y-4 text-sm text-[#9CA3AF]">
+              <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+              <li><a href="#how" className="hover:text-white transition-colors">How it Works</a></li>
+              <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+            </ul>
+          </div>
+
+          {/* Links Column 2 */}
+          <div>
+            <h3 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Legal</h3>
+            <ul className="space-y-4 text-sm text-[#9CA3AF]">
+              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="max-w-7xl mx-auto pt-8 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between text-xs text-[#6B7280]">
+          <p>© {new Date().getFullYear()} AttendEase Technologies Inc. All rights reserved.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <a href="#" className="hover:text-white transition-colors">Twitter</a>
+            <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+            <a href="#" className="hover:text-white transition-colors">GitHub</a>
+          </div>
+        </div>
       </footer>
 
     </div>
