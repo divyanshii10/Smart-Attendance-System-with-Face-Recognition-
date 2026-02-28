@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 # Enable CORS — allow any origin in dev, or restrict to FRONTEND_URL in prod
 frontend_url = os.environ.get("FRONTEND_URL", "*")
-CORS(app, origins=frontend_url)
+CORS(app, origins=frontend_url, supports_credentials=True, allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
 
 # Create / migrate tables in DB
 Base.metadata.create_all(bind=engine)

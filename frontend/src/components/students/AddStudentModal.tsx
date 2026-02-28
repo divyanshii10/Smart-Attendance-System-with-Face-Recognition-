@@ -76,7 +76,11 @@ export const AddStudentModal = ({ isOpen, onClose, onSuccess }: AddStudentModalP
                 payload.append('image', formData.image);
             }
 
-            const res = await api.post('/students/register', payload);
+            const res = await api.post('/students/register', payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
 
             console.log('Registration result:', res.data);
 
