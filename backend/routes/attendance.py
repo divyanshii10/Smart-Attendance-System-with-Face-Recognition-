@@ -13,15 +13,25 @@ from middleware.auth import require_auth
 @attendance_bp.route("/start", methods=["POST"])
 @require_auth
 def start_session(current_admin_id):
-    session_id = set_active_session(current_admin_id)
-    return jsonify({"success": True, "sessionId": session_id})
+    try:
+        session_id = set_active_session(current_admin_id)
+        return jsonify({"success": True, "sessionId": session_id})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "message": str(e)}), 500
 
 
 @attendance_bp.route("/stop", methods=["POST"])
 @require_auth
 def stop_session(current_admin_id):
-    clear_active_session(current_admin_id)
-    return jsonify({"success": True})
+    try:
+        clear_active_session(current_admin_id)
+        return jsonify({"success": True})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "message": str(e)}), 500
 
 
 # ✅ Recognition + Attendance Marking Route
