@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey, UniqueConstraint
 from database.db import Base
 
 
@@ -21,9 +21,12 @@ class Student(Base):
 class AttendanceSession(Base):
     """One row per attendance session (one per class / day)."""
     __tablename__ = "attendance_sessions"
+    __table_args__ = (
+        UniqueConstraint("date", "admin_id", name="uq_attendance_session_date_admin"),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(String, unique=True, nullable=False)  # "YYYY-MM-DD" — ONE session per day
+    date = Column(String, nullable=False)  # "YYYY-MM-DD"
 
     start_time = Column(DateTime, nullable=True)
     end_time = Column(DateTime, nullable=True)
