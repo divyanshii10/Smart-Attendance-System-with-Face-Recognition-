@@ -8,7 +8,7 @@ from database.db import SessionLocal
 from database.models import Student
 
 
-def recognize_face(image_base64):
+def recognize_face(image_base64, admin_id):
     print(f"[recognize_face] Received image string of length: {len(image_base64) if image_base64 else 0}")
     # Decode base64
     header, encoded = image_base64.split(",", 1)
@@ -31,7 +31,7 @@ def recognize_face(image_base64):
     # Load DB encodings
     db = SessionLocal()
     try:
-        students = db.query(Student).all()
+        students = db.query(Student).filter_by(admin_id=admin_id).all()
 
         known_encodings = []
         student_data = []

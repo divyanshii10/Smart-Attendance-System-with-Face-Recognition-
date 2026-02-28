@@ -51,7 +51,7 @@ def verify_face(current_admin_id):
         return jsonify({"success": False, "message": "No active session"})
 
     # 2 & 3. extract encoding & recognize student
-    student = recognize_face(image_base64)
+    student = recognize_face(image_base64, current_admin_id)
     status = "marked"
 
     if not student:
