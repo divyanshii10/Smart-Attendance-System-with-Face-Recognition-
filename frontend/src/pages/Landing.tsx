@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -147,56 +147,136 @@ export default function Landing() {
       </section>
 
       {/* ================= FEATURES ================= */}
-      <section id="features" className="px-10 md:px-20 py-24">
+      <section id="features" className="py-24 relative overflow-hidden">
 
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          className="text-4xl font-bold text-center mb-16 gradient-text"
-        >
-          Powerful Features
-        </motion.h2>
+        <div className="px-10 md:px-20 relative z-20">
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-[#4F46E5] to-[#06B6D4] bg-clip-text text-transparent"
+          >
+            Powerful Features
+          </motion.h2>
+        </div>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          className="grid md:grid-cols-3 gap-8"
-        >
+        {/* Cinematic Fade Edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-[#0B1120] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-[#0B1120] to-transparent z-10 pointer-events-none" />
 
-          {[
-            {
-              title: "Live Face Attendance",
-              desc: "Real-time face detection & attendance marking."
-            },
-            {
-              title: "Analytics Dashboard",
-              desc: "Visual insights of attendance trends."
-            },
-            {
-              title: "Automated Reports",
-              desc: "Generate daily & monthly reports instantly."
-            }
-          ].map((f, i) => (
+        {/* Camera Roll Track Container */}
+        <div className="relative flex overflow-hidden group">
+          <motion.div
+            className="flex gap-6 w-max px-6"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              ease: "linear",
+              duration: 36, // Slow, premium speed
+              repeat: Infinity,
+            }}
+            // Pause animation on hover for better UX
+            whileHover={{ animationPlayState: "paused" }}
+          >
+            {[
+              {
+                title: "Live Face Attendance",
+                desc: "Millisecond-level real-time face detection using high-accuracy AI models.",
+                image: "/assets/attendance-ui.png",
+              },
+              {
+                title: "Analytics Dashboard",
+                desc: "Visual insights of attendance trends and department-wise tracking in an intuitive interface.",
+                image: "/assets/dashboard-ui.png",
+              },
+              {
+                title: "Automated Reports",
+                desc: "Generate and export daily & monthly reports instantly with one click.",
+                image: "/assets/reports-ui.png",
+              },
+              {
+                title: "Duplicate Detection",
+                desc: "Intelligently prevents proxy or duplicate attendance marking within the same active session.",
+                image: "/assets/face-scan-bg.jpeg",
+              },
+              {
+                title: "Multi-Admin Security",
+                desc: "Fully isolated tenant accounts with distinct databases for records and settings.",
+                image: "/assets/attendance-bg.png",
+              }
+            ].concat([
+              {
+                title: "Live Face Attendance",
+                desc: "Millisecond-level real-time face detection using high-accuracy AI models.",
+                image: "/assets/attendance-ui.png",
+              },
+              {
+                title: "Analytics Dashboard",
+                desc: "Visual insights of attendance trends and department-wise tracking in an intuitive interface.",
+                image: "/assets/dashboard-ui.png",
+              },
+              {
+                title: "Automated Reports",
+                desc: "Generate and export daily & monthly reports instantly with one click.",
+                image: "/assets/reports-ui.png",
+              },
+              {
+                title: "Duplicate Detection",
+                desc: "Intelligently prevents proxy or duplicate attendance marking within the same active session.",
+                image: "/assets/face-scan-bg.jpeg",
+              },
+              {
+                title: "Multi-Admin Security",
+                desc: "Fully isolated tenant accounts with distinct databases for records and settings.",
+                image: "/assets/attendance-bg.png",
+              }
+            ]).map((f, i) => (
 
-            <motion.div
-              key={i}
-              variants={fadeUp}
-              whileHover={{ scale: 1.03 }}
-              className="p-6 rounded-2xl bg-[#111827] border border-white/[0.06] hover:border-[#4F46E5]/30 shadow-[0_4px_24px_rgba(0,0,0,0.3)] transition-all"
-            >
-              <h3 className="text-xl font-semibold mb-3 text-[#4F46E5]">
-                {f.title}
-              </h3>
-              <p className="text-[#9CA3AF] text-sm">
-                {f.desc}
-              </p>
-            </motion.div>
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05 }}
+                animate={{ y: [0, -8, 0] }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                  delay: i * 0.15, // Staggered floating effect
+                }}
+                className="
+                  relative w-[85vw] md:w-[420px] h-[320px] md:h-[400px]
+                  shrink-0 rounded-3xl overflow-hidden
+                  border border-white/[0.08]
+                  shadow-[0_8px_32px_rgba(0,0,0,0.5)]
+                  hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]
+                  hover:border-[#4F46E5]/50
+                  transition-all duration-500 cursor-default group/card
+                "
+              >
+                {/* Visual Image Background */}
+                <img
+                  src={f.image}
+                  className="absolute inset-0 w-full h-full object-cover group-hover/card:scale-110 group-hover/card:rotate-1 transition-transform duration-700 opacity-60 group-hover/card:opacity-90"
+                  alt={f.title}
+                />
 
-          ))}
+                {/* Cinematic Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-[#0B1120]/40 to-transparent" />
 
-        </motion.div>
+                {/* Inner Content */}
+                <div className="absolute bottom-8 left-8 right-8 text-white translate-y-2 group-hover/card:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-2xl font-bold mb-3 text-[#E5E7EB] group-hover/card:text-white drop-shadow-md">
+                    {f.title}
+                  </h3>
+                  <p className="text-[#9CA3AF] text-sm md:text-base leading-relaxed group-hover/card:text-[#D1D5DB] drop-shadow-lg opacity-90">
+                    {f.desc}
+                  </p>
+                </div>
+              </motion.div>
+
+            ))}
+          </motion.div>
+        </div>
       </section>
 
       {/* ================= HOW ================= */}
