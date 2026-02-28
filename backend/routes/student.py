@@ -64,11 +64,18 @@ def register_student(current_admin_id):
     email = request.form.get("email", "")
 
     if not name or not roll_number or not department:
-        return jsonify({"error": "Missing required fields"}), 400
+        return jsonify({
+            "error": "Missing required fields", 
+            "details": f"name: {bool(name)}, roll: {bool(roll_number)}, dept: {bool(department)}",
+            "received_keys": list(request.form.keys())
+        }), 400
 
     image_file = request.files.get("image")
     if not image_file:
-        return jsonify({"error": "No image uploaded"}), 400
+        return jsonify({
+            "error": "No image uploaded",
+            "received_files": list(request.files.keys())
+        }), 400
 
     # ── Read & validate image ──────────────────────────────────────────────────
     img_bytes = image_file.read()
