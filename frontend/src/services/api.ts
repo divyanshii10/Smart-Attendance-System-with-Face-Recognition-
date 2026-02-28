@@ -30,10 +30,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Complete token wipe and redirect on unauthorized
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('authUser');
-      window.location.href = '/login';
+      const originalRequestUrl = error.config?.url || '';
+
+      // Do not redirect if the 401 came from the login or signup payload itself
+      if (!originalRequestUrl.includes('/auth/login') && !originalRequestUrl.includes('/auth/signup')) {
+        // Complete token wipe and redirect on unauthorized
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
