@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Twitter, Linkedin, Github } from "lucide-react";
+import { Twitter, Linkedin, Github, User } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Landing() {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [typewriterKey, setTypewriterKey] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
@@ -16,8 +18,7 @@ export default function Landing() {
   }, []);
 
   const handleProtectedNav = (path: string) => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    if (isAuthenticated) {
       navigate(path);
     } else {
       navigate("/login");
@@ -71,20 +72,40 @@ export default function Landing() {
 
           <div className="w-px h-6 bg-white/20 mx-2" />
 
-          {/* CTA */}
+          {/* CTA / PROFILE */}
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/login")}
-              className="px-4 py-2 text-white font-medium hover:text-[#06B6D4] transition"
-            >
-              Log In
-            </button>
-            <button
-              onClick={() => navigate("/signup")}
-              className="px-6 py-2.5 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium transition shadow-lg shadow-[#4F46E5]/20"
-            >
-              Sign Up
-            </button>
+            {isAuthenticated ? (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => navigate('/dashboard')}
+                className="flex items-center space-x-3 px-4 py-2 bg-[#111827] border border-white/[0.06] rounded-lg cursor-pointer transition shadow-lg shadow-black/20"
+              >
+                <div className="w-8 h-8 bg-[#4F46E5] rounded-full flex items-center justify-center">
+                  <User className="w-4 h-4 text-white" />
+                </div>
+                <div className="text-sm leading-tight text-left">
+                  <p className="font-medium text-[#E5E7EB]">{user?.name || 'Admin'}</p>
+                  <p className="text-[#6B7280] text-xs capitalize">{user?.role || 'Administrator'}</p>
+                </div>
+              </motion.div>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="px-4 py-2 text-white font-medium hover:text-[#06B6D4] transition"
+                >
+                  Log In
+                </button>
+                <button
+                  onClick={() => navigate("/signup")}
+                  className="px-6 py-2.5 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium transition shadow-lg shadow-[#4F46E5]/20"
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
           </div>
 
         </div>
@@ -101,6 +122,9 @@ export default function Landing() {
         />
 
         <div className="absolute inset-0 bg-[#0B1120]/90" />
+
+        {/* Subtle Polka-Dot Tech Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
         {/* HERO CONTENT */}
         <div className="relative grid md:grid-cols-2 gap-16 items-center px-10 md:px-16 py-24 flex-1">
