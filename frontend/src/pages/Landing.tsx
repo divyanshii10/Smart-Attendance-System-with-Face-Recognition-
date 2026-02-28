@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, Twitter, Linkedin, Github } from "lucide-react";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -13,6 +14,15 @@ export default function Landing() {
     }, 6000); // 6 seconds loop
     return () => clearInterval(interval);
   }, []);
+
+  const handleProtectedNav = (path: string) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate(path);
+    } else {
+      navigate("/login");
+    }
+  };
 
   /* ================= ANIMATIONS ================= */
 
@@ -35,6 +45,52 @@ export default function Landing() {
   return (
     <div className="bg-[#0B1120] text-white scroll-smooth">
 
+      {/* NAVBAR */}
+      <nav className="sticky top-0 z-[100] flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/[0.04] bg-[#0B1120]/60 backdrop-blur-xl">
+
+        {/* LEFT SIDE: Brand */}
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#4F46E5]/20">
+            <span className="text-white text-lg">📸</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-white">
+            Attend<span className="text-[#06B6D4]">Ease</span>
+          </h1>
+        </div>
+
+        {/* RIGHT SIDE: Links + CTA */}
+        <div className="hidden lg:flex items-center gap-6">
+
+          {/* Links */}
+          <div className="flex items-center gap-8">
+            <button onClick={() => handleProtectedNav("/live-attendance")} className="text-lg font-medium text-[#9CA3AF] hover:text-white transition-colors">Live Attendance</button>
+            <a href="#how" className="text-lg font-medium text-[#9CA3AF] hover:text-white transition-colors">How it Works</a>
+            <a href="#features" className="text-lg font-medium text-[#9CA3AF] hover:text-white transition-colors">Features</a>
+            <a href="#faq" className="text-lg font-medium text-[#9CA3AF] hover:text-white transition-colors">FAQs</a>
+          </div>
+
+          <div className="w-px h-6 bg-white/20 mx-2" />
+
+          {/* CTA */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate("/login")}
+              className="px-4 py-2 text-white font-medium hover:text-[#06B6D4] transition"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => navigate("/signup")}
+              className="px-6 py-2.5 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium transition shadow-lg shadow-[#4F46E5]/20"
+            >
+              Sign Up
+            </button>
+          </div>
+
+        </div>
+
+      </nav>
+
       {/* ================= HERO ================= */}
       <section className="relative min-h-screen flex flex-col">
 
@@ -45,36 +101,6 @@ export default function Landing() {
         />
 
         <div className="absolute inset-0 bg-[#0B1120]/90" />
-
-        {/* NAVBAR */}
-        <nav className="relative z-50 flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/[0.04] bg-[#0B1120]/40 backdrop-blur-md">
-
-          {/* Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#4F46E5]/20">
-              <span className="text-white text-lg">📸</span>
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              Attend<span className="text-[#06B6D4]">Ease</span>
-            </h1>
-          </div>
-
-          {/* Links */}
-          <div className="hidden md:flex items-center gap-10">
-            <a href="#features" className="text-base font-medium text-[#9CA3AF] hover:text-white transition-colors">Features</a>
-            <a href="#how" className="text-base font-medium text-[#9CA3AF] hover:text-white transition-colors">How it Works</a>
-            <a href="#faq" className="text-base font-medium text-[#9CA3AF] hover:text-white transition-colors">FAQs</a>
-          </div>
-
-          {/* CTA */}
-          <button
-            onClick={() => navigate("/login")}
-            className="px-6 py-2.5 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium transition"
-          >
-            Sign In
-          </button>
-
-        </nav>
 
         {/* HERO CONTENT */}
         <div className="relative grid md:grid-cols-2 gap-16 items-center px-10 md:px-16 py-24 flex-1">
@@ -164,7 +190,10 @@ export default function Landing() {
       </section>
 
       {/* ================= FEATURES ================= */}
-      <section id="features" className="py-24 relative overflow-hidden">
+      <section id="features" className="py-24 relative overflow-hidden bg-[#0A0F1C] border-y border-white/[0.02]">
+
+        {/* Subtle Polka-Dot Tech Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
         <div className="px-10 md:px-20 relative z-20">
           <motion.h2
@@ -297,7 +326,7 @@ export default function Landing() {
       </section>
 
       {/* ================= HOW ================= */}
-      <section id="how" className="px-10 md:px-20 py-24 relative">
+      <section id="how" className="px-10 md:px-20 py-24 relative bg-[#0B1120]">
         <div className="max-w-6xl mx-auto">
 
           {/* Animated Typewriter Heading */}
@@ -434,8 +463,11 @@ export default function Landing() {
       </section>
 
       {/* ================= FAQ ================= */}
-      <section id="faq" className="px-10 md:px-20 py-24 relative">
-        <div className="max-w-3xl mx-auto">
+      <section id="faq" className="px-10 md:px-20 py-24 relative bg-[#0A0F1C] border-t border-white/[0.02]">
+        {/* Ambient top glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-px bg-gradient-to-r from-transparent via-[#4F46E5]/40 to-transparent" />
+
+        <div className="max-w-3xl mx-auto relative z-10">
           <motion.h2
             variants={fadeUp}
             initial="hidden"
@@ -513,7 +545,7 @@ export default function Landing() {
       </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="relative border-t border-white/[0.04] bg-[#0B1120] pt-20 pb-10 px-6 md:px-12">
+      <footer className="relative border-t border-white/[0.04] bg-[#050810] pt-20 pb-6 px-6 md:px-12">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#4F46E5]/50 to-transparent opacity-50" />
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
@@ -531,16 +563,28 @@ export default function Landing() {
             <p className="text-[#9CA3AF] text-sm leading-relaxed max-w-sm">
               The next-generation biometric attendance platform. Automating compliance and security for modern enterprises with edge-AI facial recognition.
             </p>
+            {/* Social Links Moved Here */}
+            <div className="flex gap-4 mt-6">
+              <a href="#" className="p-2 rounded-lg bg-white/5 border border-white/10 text-[#6B7280] hover:text-white hover:bg-white/10 transition-all">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="#" className="p-2 rounded-lg bg-white/5 border border-white/10 text-[#6B7280] hover:text-white hover:bg-white/10 transition-all">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="https://github.com/" className="p-2 rounded-lg bg-white/5 border border-white/10 text-[#6B7280] hover:text-white hover:bg-white/10 transition-all">
+                <Github className="w-5 h-5" />
+              </a>
+            </div>
           </div>
 
           {/* Links Column 1 */}
           <div>
-            <h3 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Platform</h3>
+            <h3 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Quick Links</h3>
             <ul className="space-y-4 text-sm text-[#9CA3AF]">
               <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
               <li><a href="#how" className="hover:text-white transition-colors">How it Works</a></li>
-              <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+              <li><a href="#faq" className="hover:text-white transition-colors">Helps & Support</a></li>
+              {/* <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li> */}
             </ul>
           </div>
 
@@ -549,8 +593,8 @@ export default function Landing() {
             <h3 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase">Legal</h3>
             <ul className="space-y-4 text-sm text-[#9CA3AF]">
               <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">Terms of Service</a></li>
+              {/* <li><a href="#" className="hover:text-white transition-colors">Security</a></li> */}
               <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
@@ -558,13 +602,8 @@ export default function Landing() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="max-w-7xl mx-auto pt-8 border-t border-white/[0.04] flex flex-col md:flex-row items-center justify-between text-xs text-[#6B7280]">
+        <div className="max-w-7xl mx-auto pt-8 border-t border-white/[0.04] flex items-center justify-center text-xs text-[#6B7280]">
           <p>© {new Date().getFullYear()} AttendEase Technologies Inc. All rights reserved.</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">Twitter</a>
-            <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-white transition-colors">GitHub</a>
-          </div>
         </div>
       </footer>
 
