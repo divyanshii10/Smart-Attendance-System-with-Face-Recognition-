@@ -2,22 +2,24 @@ import os
 from flask import Blueprint, jsonify, request, send_file
 from database.db import SessionLocal
 from database.models import SystemSettings
+from middleware.auth import require_auth
 
 settings_bp = Blueprint("settings", __name__)
 
-def get_or_create_settings(db):
-    settings = db.query(SystemSettings).first()
+def get_or_create_settings(db, admin_id):
+    settings = db.query(SystemSettings).filter_by(admin_id=admin_id).first()
     if not settings:
-        settings = SystemSettings(confidence_threshold=0.85, auto_export=False)
+        settings = SystemSettings(confidence_threshold=0.85, auto_export=False, admin_id=admin_id)
         db.add(settings)
         db.commit()
     return settings
 
 @settings_bp.route("", methods=["GET"])
-def get_settings():
+@require_auth
+def get_settings(current_admin_id):
     db = SessionLocal()
     try:
-        settings = get_or_create_settings(db)
+        settings = get_or_create_settings(db, current_admin_id)
         return jsonify({
             "confidenceThreshold": settings.confidence_threshold,
             "autoExport": settings.auto_export
@@ -26,11 +28,12 @@ def get_settings():
         db.close()
 
 @settings_bp.route("", methods=["POST"])
-def update_settings():
+@require_auth
+def update_settings(current_admin_id):
     db = SessionLocal()
     try:
         data = request.json
-        settings = get_or_create_settings(db)
+        settings = get_or_create_settings(db, current_admin_id)
         
         if "confidenceThreshold" in data:
             settings.confidence_threshold = float(data["confidenceThreshold"])
@@ -50,7 +53,8 @@ def update_settings():
         db.close()
 
 @settings_bp.route("/backup", methods=["GET"])
-def backup_database():
+@require_auth
+def backup_database(current_admin_id):
     # In a real PostgreSQL environment, you would use pg_dump logic here. 
     # For simplicity and given the user request mentions "Return: PostgreSQL -> exported dump",
     # let's trigger a pg_dump to a temp file and serve it.

@@ -7,23 +7,27 @@ from services.recognize_service import recognize_face
 
 # ✅ Create Blueprint
 attendance_bp = Blueprint("attendance", __name__)
+from middleware.auth import require_auth
 
 
 @attendance_bp.route("/start", methods=["POST"])
-def start_session():
-    session_id = set_active_session()
+@require_auth
+def start_session(current_admin_id):
+    session_id = set_active_session(current_admin_id)
     return jsonify({"success": True, "sessionId": session_id})
 
 
 @attendance_bp.route("/stop", methods=["POST"])
-def stop_session():
-    clear_active_session()
+@require_auth
+def stop_session(current_admin_id):
+    clear_active_session(current_admin_id)
     return jsonify({"success": True})
 
 
 # ✅ Recognition + Attendance Marking Route
 @attendance_bp.route("/verify", methods=["POST"])
-def verify_face():
+@require_auth
+def verify_face(current_admin_id):
     print("✅ VERIFY API HIT")
     data = request.json
     image_base64 = data.get("image")
@@ -32,7 +36,7 @@ def verify_face():
         return jsonify({"success": False, "message": "No image provided"}), 400
 
     # 1. check active session
-    session = get_active_session()
+    session = get_active_session(current_admin_id)
     if not session:
         return jsonify({"success": False, "message": "No active session"})
 
@@ -41,7 +45,7 @@ def verify_face():
     status = "marked"
 
     if not student:
-        log_failed_scan()
+        log_failed_scan(current_admin_id)
         return jsonify({
             "success": True,
             "status": "not_found",
@@ -59,7 +63,7 @@ def verify_face():
             })
 
     # 5. store attendance
-    mark_attendance(student, session)
+    mark_attendance(student, session, current_admin_id)
 
     return jsonify({
         "success": True,
@@ -69,17 +73,19 @@ def verify_face():
     })
 
 @attendance_bp.route("/recent", methods=["GET"])
-def recent_attendance():
+@require_auth
+def recent_attendance(current_admin_id):
     try:
-        records = get_recent_attendance()
+        records = get_recent_attendance(current_admin_id)
         return jsonify({"success": True, "records": records})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 
 @attendance_bp.route("/today-stats", methods=["GET"])
-def today_stats():
+@require_auth
+def today_stats(current_admin_id):
     try:
-        stats = get_today_stats()
+        stats = get_today_stats(current_admin_id)
         return jsonify({
             "verified": stats["verified"],
             "failed": stats["failed"]

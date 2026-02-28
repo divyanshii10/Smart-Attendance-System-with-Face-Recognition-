@@ -26,6 +26,19 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Complete token wipe and redirect on unauthorized
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const authAPI = {
   login: async (email: string, password: string): Promise<User> => {
     try {
@@ -127,8 +140,8 @@ export const dashboardAPI = {
 
 export const studentsAPI = {
   getAll: async (): Promise<Student[]> => {
-    const res = await fetch(`${API_BASE_URL}/students/`);
-    const data = await res.json();
+    const res = await api.get('/students/');
+    const data = res.data;
     return data.map((s: any) => ({
       id: String(s.id),
       rollNumber: s.roll_number,
@@ -161,10 +174,10 @@ export const studentsAPI = {
   },
 
   delete: async (id: string): Promise<void> => {
-    const res = await fetch(`${API_BASE_URL}/students/${id}`, { method: 'DELETE' });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || 'Failed to delete student');
+    try {
+      await api.delete(`/students/${id}`);
+    } catch (err: any) {
+      throw new Error(err.response?.data?.error || 'Failed to delete student');
     }
   }
 };
@@ -180,7 +193,7 @@ export const attendanceAPI = {
     return response.data;
   },
 
-  verifyAttendance: async (image_base64: string): Promise<{ success: boolean; student?: string; message?: string }> => {
+  verifyAttendance: async (image_base64: string): Promise<{ success: boolean; status?: string; student?: string; message?: string }> => {
     const response = await api.post('/attendance/verify', { image: image_base64 });
     return response.data;
   },
@@ -205,23 +218,34 @@ export const attendanceAPI = {
     return mockAttendanceRecords;
   },
 
+  getRecentActivity: async () => {
+    const res = await api.get('/attendance/recent');
+    return res.data;
+  },
+
   getTodayStats: async () => {
-    const res = await fetch(`${API_BASE_URL}/attendance/today-stats`);
-    return res.json();
+    const res = await api.get('/attendance/today-stats');
+    return res.data;
   }
 };
 
 export const reportsAPI = {
   getSessions: async () => {
-    const res = await fetch(`${API_BASE_URL}/reports/sessions`);
-    if (!res.ok) throw new Error('Failed to fetch sessions');
-    return res.json();
+    try {
+      const res = await api.get('/reports/sessions');
+      return res.data;
+    } catch (e: any) {
+      throw new Error('Failed to fetch sessions');
+    }
   },
 
   getSessionDetail: async (sessionId: number) => {
-    const res = await fetch(`${API_BASE_URL}/reports/session/${sessionId}`);
-    if (!res.ok) throw new Error('Failed to fetch session detail');
-    return res.json();
+    try {
+      const res = await api.get(`/reports/session/${sessionId}`);
+      return res.data;
+    } catch (e: any) {
+      throw new Error('Failed to fetch session detail');
+    }
   },
 
   exportSession: (sessionId: number) => {

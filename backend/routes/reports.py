@@ -2,17 +2,19 @@ import io
 from flask import Blueprint, jsonify, send_file
 from database.db import SessionLocal
 from database.models import AttendanceSession, Attendance, Student
+from middleware.auth import require_auth
 
 reports_bp = Blueprint("reports", __name__)
 
 
 @reports_bp.route("/sessions", methods=["GET"])
-def get_sessions():
+@require_auth
+def get_sessions(current_admin_id):
     """List all attendance sessions with present / absent counts."""
     db = SessionLocal()
     try:
-        sessions = db.query(AttendanceSession).order_by(AttendanceSession.id.desc()).all()
-        total_students = db.query(Student).count()
+        sessions = db.query(AttendanceSession).filter_by(admin_id=current_admin_id).order_by(AttendanceSession.id.desc()).all()
+        total_students = db.query(Student).filter_by(admin_id=current_admin_id).count()
 
         result = []
         for s in sessions:
@@ -36,15 +38,16 @@ def get_sessions():
 
 
 @reports_bp.route("/session/<int:session_id>", methods=["GET"])
-def get_session_detail(session_id):
+@require_auth
+def get_session_detail(current_admin_id, session_id):
     """Full attendance sheet for a session: every student with Present / Absent status."""
     db = SessionLocal()
     try:
-        session = db.query(AttendanceSession).filter_by(id=session_id).first()
+        session = db.query(AttendanceSession).filter_by(id=session_id, admin_id=current_admin_id).first()
         if not session:
             return jsonify({"error": "Session not found"}), 404
 
-        all_students = db.query(Student).all()
+        all_students = db.query(Student).filter_by(admin_id=current_admin_id).all()
 
         # Set of student ids that were marked present in this session
         present_ids = {
@@ -92,7 +95,9 @@ def generate_excel_for_session(session_id):
         if not session:
             return None
 
-        all_students = db.query(Student).all()
+        # Just to be safe, filter students by admin_id from the session
+        admin_id = session.admin_id
+        all_students = db.query(Student).filter_by(admin_id=admin_id).all()
 
         present_map = {
             row.student_id: row.time
@@ -143,11 +148,12 @@ def generate_excel_for_session(session_id):
         db.close()
 
 @reports_bp.route("/export/<int:session_id>", methods=["GET"])
-def export_session(session_id):
+@require_auth
+def export_session(current_admin_id, session_id):
     """Download attendance sheet as .xlsx — all data in-memory (Render safe, no disk writes)."""
     db = SessionLocal()
     try:
-        session = db.query(AttendanceSession).filter_by(id=session_id).first()
+        session = db.query(AttendanceSession).filter_by(id=session_id, admin_id=current_admin_id).first()
         if not session:
             return jsonify({"error": "Session not found"}), 404
 

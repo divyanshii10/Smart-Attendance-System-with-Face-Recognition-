@@ -9,14 +9,16 @@ from PIL import Image
 
 from database.db import SessionLocal
 from database.models import Student
+from middleware.auth import require_auth
 
 student_bp = Blueprint("students", __name__)
 
 
 @student_bp.route("/", methods=["GET"])
-def get_students():
+@require_auth
+def get_students(current_admin_id):
     db = SessionLocal()
-    students = db.query(Student).all()
+    students = db.query(Student).filter(Student.admin_id == current_admin_id).all()
     db.close()
     return jsonify([
         {
@@ -53,7 +55,8 @@ def get_student_photo(student_id):
 
 
 @student_bp.route("/register", methods=["POST"])
-def register_student():
+@require_auth
+def register_student(current_admin_id):
     name = request.form.get("name")
     roll_number = request.form.get("roll_number")
     department = request.form.get("department")
@@ -98,7 +101,8 @@ def register_student():
         year=year,
         email=email,
         photo_data=photo_b64,           # stored in DB, not on disk
-        face_encoding=str(encoding)
+        face_encoding=str(encoding),
+        admin_id=current_admin_id
     )
 
     db.add(student)
@@ -109,13 +113,14 @@ def register_student():
 
 
 @student_bp.route("/<int:student_id>", methods=["DELETE"])
-def delete_student(student_id):
+@require_auth
+def delete_student(current_admin_id, student_id):
     from database.models import Attendance
     db = SessionLocal()
     try:
-        student = db.query(Student).filter_by(id=student_id).first()
+        student = db.query(Student).filter_by(id=student_id, admin_id=current_admin_id).first()
         if not student:
-            return jsonify({"error": "Student not found"}), 404
+            return jsonify({"error": "Student not found or unauthorized"}), 404
 
         # Delete associated attendance records to keep DB clean
         db.query(Attendance).filter_by(student_id=student_id).delete()

@@ -8,9 +8,6 @@ import type { AttendanceLog } from '../types';
 import Webcam from 'react-webcam';
 
 import { attendanceAPI } from '../services/api';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
-
 export const LiveAttendance = () => {
   const webcamRef = useRef<Webcam>(null);
   const [isActive, setIsActive] = useState(false);
@@ -26,8 +23,7 @@ export const LiveAttendance = () => {
   useEffect(() => {
     const fetchRecentLogs = async () => {
       try {
-        const res = await fetch(`${API_URL}/attendance/recent`);
-        const data = await res.json();
+        const data = await attendanceAPI.getRecentActivity();
         if (data.success && data.records) {
           const recentLogs = data.records.map((r: any) => ({
             id: r.student_id + Math.random().toString(),
@@ -60,8 +56,7 @@ export const LiveAttendance = () => {
   const handleStartSession = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${API_URL}/attendance/start`, { method: "POST" });
-      const result = await res.json();
+      const result = await attendanceAPI.startSession();
       setSessionId(result.sessionId);
       setIsActive(true);
       processedStudents.current.clear();
@@ -77,11 +72,7 @@ export const LiveAttendance = () => {
     if (sessionId) {
       setIsLoading(true);
       try {
-        await fetch(`${API_URL}/attendance/stop`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId })
-        });
+        await attendanceAPI.stopSession(sessionId);
         setIsActive(false);
         setSessionId(null);
         setFaceDetected(false);
@@ -106,16 +97,7 @@ export const LiveAttendance = () => {
         if (imageSrc) {
           try {
             setFaceDetected(true);
-            const res = await fetch(`${API_URL}/attendance/verify`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                image: imageSrc,
-              }),
-            });
-            const response = await res.json();
+            const response = await attendanceAPI.verifyAttendance(imageSrc);
 
             if (response.status) {
               switch (response.status) {
@@ -124,7 +106,7 @@ export const LiveAttendance = () => {
                   setIdScanned(true);
                   break;
                 case "already_marked":
-                  if (!processedStudents.current.has(response.student)) {
+                  if (response.student && !processedStudents.current.has(response.student)) {
                     addLog(`⚠️ Student ${response.student} already marked`, 'success');
                     processedStudents.current.add(response.student);
                   }

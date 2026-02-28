@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { X, Upload, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../ui/Button';
+import api from '../../services/api';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 
 interface AddStudentModalProps {
     isOpen: boolean;
@@ -75,26 +76,18 @@ export const AddStudentModal = ({ isOpen, onClose, onSuccess }: AddStudentModalP
                 payload.append('image', formData.image);
             }
 
-            const res = await fetch(`${API_URL}/students/register`, {
-                method: 'POST',
-                body: payload,
-            });
+            const res = await api.post('/students/register', payload);
 
-            const result = await res.json();
-            console.log('Registration result:', result);
+            console.log('Registration result:', res.data);
 
-            if (res.ok) {
-                setSubmitStatus('success');
-                onSuccess?.();
-                setTimeout(() => {
-                    setFormData(defaultForm);
-                    setImagePreview(null);
-                    setSubmitStatus('idle');
-                    onClose();
-                }, 1200);
-            } else {
-                setSubmitStatus('error');
-            }
+            setSubmitStatus('success');
+            onSuccess?.();
+            setTimeout(() => {
+                setFormData(defaultForm);
+                setImagePreview(null);
+                setSubmitStatus('idle');
+                onClose();
+            }, 1200);
         } catch (err) {
             console.error('Registration failed:', err);
             setSubmitStatus('error');

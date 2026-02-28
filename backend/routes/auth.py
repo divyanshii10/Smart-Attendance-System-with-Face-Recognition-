@@ -5,6 +5,13 @@ from datetime import datetime
 
 from database.db import SessionLocal
 from database.models import AdminUser
+import jwt
+import os
+from datetime import datetime, timedelta
+
+# Should ideally be loaded from environment, defaulting to dev secret
+JWT_SECRET = os.environ.get("JWT_SECRET", "super-secret-attendance-key-1234")
+JWT_ALGORITHM = "HS256"
 
 auth_bp = Blueprint("auth", __name__)
 CORS(auth_bp)
@@ -46,11 +53,18 @@ def signup():
             "role": "admin"
         }
 
+        # Generate JWT token
+        payload = {
+            "admin_id": new_user.id,
+            "exp": datetime.utcnow() + timedelta(days=7) # Token expires in 7 days
+        }
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
         return jsonify({
             "success": True, 
             "message": "User registered successfully",
             "user": user_data,
-            "token": "mock-auth-token-123" # Simple token matching frontend expectation
+            "token": token
         })
 
     except Exception as e:
@@ -82,11 +96,18 @@ def login():
             "role": "admin"
         }
 
+        # Generate JWT token
+        payload = {
+            "admin_id": user.id,
+            "exp": datetime.utcnow() + timedelta(days=7) # Token expires in 7 days
+        }
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
         return jsonify({
             "success": True, 
             "message": "Login successful",
             "user": user_data,
-            "token": "mock-auth-token-123" # Simple token matching frontend expectation
+            "token": token
         })
 
     except Exception as e:
